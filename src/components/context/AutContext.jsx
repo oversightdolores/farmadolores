@@ -2,11 +2,13 @@ import { firebase, googleAuthProvider } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import {useState, useEffect, createContext} from 'react'
+
 import {
     GoogleSignin,
     statusCodes,
   } from '@react-native-google-signin/google-signin';
 import {Alert} from 'react-native';
+
 
 const AuthContext = createContext({
   isLoggedIn: false,
@@ -36,6 +38,7 @@ export const AuthProvider = ({ children }) => {
           const data = snapshot.data();
           setUser(data);
         });
+
       } else {
         setUser(null);
       }
@@ -60,13 +63,13 @@ export const AuthProvider = ({ children }) => {
 
 
    const register = async (email, password, displayName, apellido) => {
+
     try {
       const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
       const user = response.user;
       await firestore().collection('users').doc(user.uid).set({
         displayName,
         email,
-        apellido,
       });
       return setUser(user);
     } catch (error) {
@@ -111,11 +114,13 @@ export const AuthProvider = ({ children }) => {
           displayName: user?.displayName || '',
           apellido: user?.apellido || '',
           phoneNumber: user?.phoneNumber || '',
+
           dir: user?.dir || '',
           photoURL: user?.photoURL || ''
         });
       }
       return setUser(snapshot);
+
   } catch (error) {
       console.log(error);
   }
@@ -130,7 +135,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
   
-  
+
    const updateProfileImage = async (uid, uri) => {
       try {
         const response = await fetch(uri);
@@ -143,6 +148,7 @@ export const AuthProvider = ({ children }) => {
           .doc(uid)
           .update({ profileImage: url });
          
+
       } catch (error) {
         console.log(error);
       }
@@ -151,6 +157,7 @@ export const AuthProvider = ({ children }) => {
   
     const updateInfo = async (userId, userInfo) => {
       const {displayName, apellido, phoneNumber, dir} = userInfo
+
       try {
       await firestore()
           .collection('users')
@@ -161,6 +168,7 @@ export const AuthProvider = ({ children }) => {
               email: user?.email,
               apellido: apellido,
               phoneNumber: phoneNumber,
+
               dir:dir
            });
            
@@ -185,6 +193,7 @@ login,
 register,
 logout,
 resetPassword,
+
 }}
 >
 {children}
@@ -193,4 +202,5 @@ resetPassword,
 };
 
 export default AuthContext;
+
 

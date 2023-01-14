@@ -124,6 +124,7 @@ useEffect(() => {
             <Icon name="phone" color="#777777" size={20} />
             <Text style={{color: '#777777', marginLeft: 20}}>
               {user?.phoneNumber}
+
             </Text>
           </View>
         </View>

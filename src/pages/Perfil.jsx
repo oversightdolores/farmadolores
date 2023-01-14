@@ -240,7 +240,7 @@ console.log('userPerfil',user)
       uid: user?.uid,
       displayName: user?.displayName,
       apellido: user?.apellido,
-      tel: user?.tel,
+      phoneNumber: user?.phoneNumber,
       dir: user?.dir,
       photoURL: user?.photoURL
     });
@@ -264,7 +264,8 @@ console.log('userPerfil',user)
           <View style={styles.row}>
             <Icon name="phone" color="#777777" size={20} />
             <Text style={{color: '#777777', marginLeft: 20}}>
-              {user?.tel}
+              {user?.phoneNumber}
+
             </Text>
           </View>
         </View>
@@ -431,7 +432,7 @@ console.log('userPerfil',user)
                 {user?.displayName}
               </Text>
               <Text style={styles.userInfo}>{user?.email}</Text>
-              <Text style={styles.userInfo}>{user?.tel}</Text>
+              <Text style={styles.userInfo}>{user?.phoneNumber}</Text>
               
             </View>
           </View>

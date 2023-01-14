@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectUser, login, logout} from '../redux/reducer';
-
+import AuthContext from '../components/context/AutContext';
 import {CommonActions} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import {auth} from '../components/firebaseConfig';
@@ -22,8 +22,9 @@ import {TextInput} from 'react-native-paper';
 const {width, height} = Dimensions.get('window');
 
 export default function Register() {
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const {register} = useContext(AuthContext)
+  const [displayName, setDisplayName] = useState('');
+  const [apellido, setApellido] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState('');
@@ -33,7 +34,7 @@ export default function Register() {
   const user = useSelector(selectUser);
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+/*   const handleLogin = () => {
     setLoading(true);
     auth()
       .createUserWithEmailAndPassword(email, password)
@@ -42,8 +43,8 @@ export default function Register() {
         const data = {
           id: uid,
           email,
-          name,
-          lastName,
+          displayName,
+          apellido,
         };
         const usersRef = firestore().collection('users');
         usersRef
@@ -51,8 +52,8 @@ export default function Register() {
           .set(data)
           .then(() => {
             auth().currentUser.updateProfile({
-              displayName: name,
-              lastName: lastName,
+              displayName: displayName,
+              apellido: apellido,
             });
             dispatch(login(data));
             setLoading(false);
@@ -66,7 +67,7 @@ export default function Register() {
         alert(error);
         setLoading(false);
       });
-  };
+  }; */
 
   return (
     <View style={styles.container}>
@@ -84,7 +85,7 @@ export default function Register() {
             label="Nombre"
             style={styles.textInput}
             autoCapitalize="none"
-            onChangeText={name => setName(name)}
+            onChangeText={displayName => setDisplayName(displayName)}
           />
         </View>
         <View style={styles.action}>
@@ -93,7 +94,7 @@ export default function Register() {
             label="Apellido"
             style={styles.textInput}
             autoCapitalize="none"
-            onChangeText={lastName => setLastName(lastName)}
+            onChangeText={apellido => setApellido(apellido)}
           />
         </View>
         <View style={styles.action}>
@@ -119,7 +120,7 @@ export default function Register() {
           <Button
             title="Registrarse"
             color="#009387"
-            onPress={() => handleLogin()}
+            onPress={() => register(email,password, displayName, apellido)}
           />
         </View>
         <View style={styles.button}>

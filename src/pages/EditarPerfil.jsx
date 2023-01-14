@@ -12,15 +12,15 @@ import {black} from 'react-native-paper/lib/typescript/styles/colors';
 
 function EditarPerfil({route}) {
   //const { user } = useContext(authContext);
-  const {displayName,apellido,tel, dir, photoURL,uid} = route.params
+  //const {displayName,apellido,tel, dir, photoURL,uid} = route.params
   console.log('este es el usuario de edit context', route.params)
  
   const {user, updateInfo, updateProfileImage} = useContext(AuthContext)
-  const [image, setImage] = useState(photoURL);
+  const [image, setImage] = useState(user?.photoURL);
   const [userInfo, setUserInfo] = useState({
     displayName: user.displayName,
     apellido: user.apellido,
-    tel: user.phoneNumber,
+    phoneNumber: user.phoneNumber,
     dir: user.dir
   });
   
@@ -29,13 +29,13 @@ function EditarPerfil({route}) {
 
   const handleSaveChanges = async () => {
     try {
-      await updateInfo(uid, userInfo);
-       updateProfileImage(uid, image);
+      await updateInfo(user.uid, userInfo);
+       updateProfileImage(user.uid, image);
       console.log('cambios enviados ')
       setUserInfo({
         displayName: '',
         apellido: '',
-        tel: '',
+        phoneNumber: '',
         dir: ''
       })
       Alert.alert('cambios enviados ')
@@ -71,7 +71,7 @@ function EditarPerfil({route}) {
                     auth().currentUser.updateProfile({ photoURL: source });
                     firestore()
                       .collection('users')
-                      .doc(id)
+                      .doc(user.uid)
                       .update({ photoURL: source });
                   }
                 },
@@ -90,7 +90,7 @@ function EditarPerfil({route}) {
                 auth().currentUser.updateProfile({ photoURL: source });
                 firestore()
                   .collection('users')
-                  .doc(id)
+                  .doc(user.uid)
                   .update({ photoURL: source });
             }
         }
@@ -121,8 +121,8 @@ function EditarPerfil({route}) {
         keyboardType='number-pad'
         placeholderTextColor={'gray'}
         placeholder="Tel"
-        value={userInfo.tel}
-        onChangeText={(text) => setUserInfo({...userInfo, tel:text})}
+        value={userInfo.phoneNumber}
+        onChangeText={(text) => setUserInfo({...userInfo, phoneNumber:text})}
       />
       <TextInput style={styles.input}
         placeholder="Dir"

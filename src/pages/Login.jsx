@@ -20,10 +20,13 @@ import {auth} from '../components/firebaseConfig';
 import {Ionicons} from '@expo/vector-icons';
 import firestore from '@react-native-firebase/firestore';
 import GoogleLogin from '../components/GoogleLogin';
+import { useContext } from 'react';
+import AuthContext from '../components/context/AutContext';
 
 const {width, height} = Dimensions.get('window');
 
 export default function Login() {
+  const {login, resetPassword} = useContext(AuthContext)
   const errores = () => {
     return !email.includes('@');
   };
@@ -147,7 +150,7 @@ export default function Login() {
           <Button
             title="Iniciar Sesión"
             color="#009387"
-            onPress={() => handleLogin()}
+            onPress={()=>login(email, password)}
           />
         </View>
         <View style={styles.button}>
@@ -160,18 +163,19 @@ export default function Login() {
       </View>
 
       <Modal style={styles.containerM} visible={visible} onDismiss={hideModal}>
-        <View style={styles.modal}>
-          <Text style={styles.modalText}>Restablecer contraseña </Text>
-          <TextInput
-            style={styles.input}
-            label="Email"
-            mode="outlined"
-            value={resetMail}
-            onChangeText={text => setResetMail(text)}
-          />
-          <Button title="Enviar" onPress={() => olvidePassword()}></Button>
-        </View>
-      </Modal>
+  <View style={styles.modal}>
+    <Text style={[styles.modalText, styles.title]}>Restablecer contraseña</Text>
+    <TextInput
+      style={styles.input}
+      label="Email"
+      mode="outlined"
+      value={resetMail}
+      onChangeText={text => setResetMail(text)}
+    />
+    <Button style={styles.submitBtn} title="Enviar" onPress={() => resetPassword(resetMail)} />
+  </View>
+</Modal>
+
     </SafeAreaView>
   );
 }
@@ -227,40 +231,39 @@ if (height < 700) {
       color: '#05375a',
     },
     containerM: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: 100,
-    },
-    modal: {
-      backgroundColor: 'white',
-      padding: 20,
-      borderRadius: 10,
-      alignItems: 'center',
-      width: '100%',
-    },
-    modalText: {
-      fontSize: 18,
-      marginBottom: 10,
-    },
-    input: {
-      width: '100%',
-      marginBottom: 10,
-      padding: 10,
-      
-      borderColor: 'gray',
-      borderRadius: 10,
-      color: 'black',
-    },
-    button: {
-      width: '100%',
-      backgroundColor: '#0077c9',
-      color: 'white',
-      padding: 10,
-      marginTop: 10,
-      textAlign: 'center',
-      fontWeight: 'bold',
-      borderRadius: 10,
-    },
+      margin: 10,
+       justifyContent: 'center'
+     },
+     modal: {
+     
+       backgroundColor: '#fff',
+       padding: 20,
+       borderRadius: 5,
+       width: '100%',
+       
+     },
+     modalText: {
+       textAlign: 'center',
+       fontSize: 18,
+       color: 'gray'
+     },
+     title: {
+       fontWeight: 'bold',
+       marginBottom: 20,
+     },
+     input: {
+       width: '100%',
+       
+       fontSize: 15,
+       marginBottom: 20,
+       
+     },
+     submitBtn: {
+       backgroundColor: '#4169E1',
+       padding: 10,
+       borderRadius: 5,
+       alignSelf: 'center',
+     },
     
   });
 } else {
@@ -314,39 +317,39 @@ if (height < 700) {
       paddingLeft: 10,
       color: '#05375a',
     },
-    modal: {
-      backgroundColor: 'white',
-      padding: 20,
-      margin: 20,
-      borderRadius: 10,
-      alignItems: 'center',
-      shadowColor: '#000',
-
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-    },
-
     containerM: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+     margin: 10,
+      justifyContent: 'center'
+    },
+    modal: {
+    
+      backgroundColor: '#fff',
+      padding: 20,
+      borderRadius: 5,
+      width: '100%',
+      
     },
     modalText: {
-      marginBottom: 15,
       textAlign: 'center',
+      fontSize: 18,
+      color: 'gray'
+    },
+    title: {
+      fontWeight: 'bold',
+      marginBottom: 20,
     },
     input: {
-      width: 200,
-      height: 44,
+      width: '100%',
+      
+      fontSize: 15,
+      marginBottom: 20,
+      
+    },
+    submitBtn: {
+      backgroundColor: '#4169E1',
       padding: 10,
-      borderWidth: 1,
-      borderColor: 'black',
-      marginBottom: 10,
+      borderRadius: 5,
+      alignSelf: 'center',
     },
   });
 }

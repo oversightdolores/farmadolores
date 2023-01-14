@@ -1,0 +1,92 @@
+
+{
+"farmacias": [
+
+
+    {
+        "id": 0,
+        "name": "espil",
+        "dir": "pellegrini",
+        "tel": 2245437227,
+        "image": "https://ibb.co/CJvcZjq",
+        "turn": ["7/22/2022", "7/14/2022"]
+    },
+{
+        "id": 1,
+        "name": "esperoni",
+        "dir": "pellegrini",
+        "tel": 2245437227,
+        "image": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNy7XS_PThAhXDYX0KHUQ8DdUQjRx6BAgBEAU&url=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Desperoni%26rlz%3D1C1CHBD_enUS821US821%26tbm%3Disch&psig=AOvVaw2_X_q_X_q-_q-_q-_q-_q-&ust=1560790981408000",
+        "turn": ["7/11/2022", "7/28/2022"]
+    },
+    {
+        "id": 2,
+        "name": "Del pueblo",
+        "dir": "pellegrini",
+        "tel": 2245437227,
+        "image": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNy7XS_PThAhXDYX0KHUQ8DdUQjRx6BAgBEAU&url=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Del pueblo%26rlz%3D1C1CHBD_enUS821US821%26tbm%3Disch&psig=AOvVaw2_X_q_X_q-_q-_q-_q-_q-&ust=1560790981408000",
+        "turn": ["7/25/2022", "7/29/2022"]
+
+    },
+    {
+        "id": 3,
+        "name": "abait",
+        "dir": "pellegrini",
+        "tel": 2245437227,
+        "image": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNy7XS_PThAhXDYX0KHUQ8DdUQjRx6BAgBEAU&url=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dabait%26rlz%3D1C1CHBD_enUS821US821%26tbm%3Disch&psig=AOvVaw2_X_q_X_q-_q-_q-_q-_q-&ust=1560790981408000",
+        "turn": ["7/6/2022", "7/9/2022"]
+
+    },
+    {
+        "id": 4,
+        "name": "marrasco",
+        "dir": "pellegrini",
+        "tel": 2245437227,
+        "image": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNy7XS_PThAhXDYX0KHUQ8DdUQjRx6BAgBEAU&url=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dmarrasco%26rlz%3D1C1CHBD_enUS821US821%26tbm%3Disch&psig=AOvVaw2_X_q_X_q-_q-_q-_q-_q-&ust=1560790981408000",
+        "turn": ["7/10/2022", "7/18/2022"]
+
+    },
+    {
+        "id": 5,
+        "name": "gopar",
+        "dir": "pellegrini",
+        "tel": 2245437227,
+        "image": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNy7XS_PThAhXDYX0KHUQ8DdUQjRx6BAgBEAU&url=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dgopar%26rlz%3D1C1CHBD_enUS821US821%26tbm%3Disch&psig=AOvVaw2_X_q_X_q-_q-_q-_q-_q-&ust=1560790981408000",
+        "turn": ["7/20/2022", "7/15/2022"]
+
+    },
+    {
+        "id": 6,
+        "name": "tamagno",
+        "dir": "pellegrini",
+        "tel": 2245437227,
+        "image": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNy7XS_PThAhXDYX0KHUQ8DdUQjRx6BAgBEAU&url=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dtamagno%26rlz%3D1C1CHBD_enUS821US821%26tbm%3Disch&psig=AOvVaw2_X_q_X_q-_q-_q-_q-_q-&ust=1560790981408000",
+        "turn": ["7/2/2022", "7/4/2022"]
+
+    },
+    {
+        "id": 7,
+        "name": "pantaleon",
+        "dir": "pellegrini",
+        "tel": 2245437227,
+        "image": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNy7XS_PThAhXDYX0KHUQ8DdUQjRx6BAgBEAU&url=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dpantaleon%26rlz%3D1C1CHBD_enUS821US821%26tbm%3Disch&psig=AOvVaw2_X_q_X_q-_q-_q-_q-_q-&ust=1560790981408000",
+        "turn": ["7/22/2022", "7/25/2022"]
+
+    },
+    {
+        "id": 8,
+        "name": "tamagno",
+        "dir": "pellegrini",
+        "tel": 2245437227,
+        "image": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNy7XS_PThAhXDYX0KHUQ8DdUQjRx6BAgBEAU&url=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dtamagno%26rlz%3D1C1CHBD_enUS821US821%26tbm%3Disch&psig=AOvVaw2_X_q_X_q-_q-_q-_q-_q-&ust=1560790981408000",
+        "turn": ["7/2/2022", "7/4/2022"]
+
+    }
+   
+
+
+]
+}
+
+
+

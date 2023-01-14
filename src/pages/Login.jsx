@@ -22,7 +22,6 @@ import firestore from '@react-native-firebase/firestore';
 import GoogleLogin from '../components/GoogleLogin';
 import { useContext } from 'react';
 import AuthContext from '../components/context/AutContext';
-
 const {width, height} = Dimensions.get('window');
 
 export default function Login() {
@@ -175,7 +174,6 @@ export default function Login() {
     <Button style={styles.submitBtn} title="Enviar" onPress={() => resetPassword(resetMail)} />
   </View>
 </Modal>
-
     </SafeAreaView>
   );
 }

@@ -1,3 +1,4 @@
+
 import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
@@ -12,6 +13,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {selectUser, login, logout} from '../redux/reducer';
 import AuthContext from '../components/context/AutContext';
+
 import {CommonActions} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import {auth} from '../components/firebaseConfig';
@@ -35,6 +37,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
 
 /*   const handleLogin = () => {
+
     setLoading(true);
     auth()
       .createUserWithEmailAndPassword(email, password)
@@ -68,6 +71,7 @@ export default function Register() {
         setLoading(false);
       });
   }; */
+
 
   return (
     <View style={styles.container}>

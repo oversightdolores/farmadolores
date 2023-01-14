@@ -49,16 +49,9 @@ console.log('userPerfil',user)
   //const user = auth().currentUser;
 
   const navigation = useNavigation();
-
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
-
-  const [photo, setPhoto] = useState('');
-  const [loading, setLoading] = useState(false);
-  const usuario = useSelector(selectUser);
+useEffect(() => {
+  user.photoURL
+},[user])
 
   useEffect(() => {
     navigation.setOptions({
@@ -95,144 +88,10 @@ console.log('userPerfil',user)
     navigation.navigate('Reportar');
   };
 
- /*  handleLogout = () => {
-    auth()
-      .signOut()
-      .then(() => {
-        dispatch(logout());
-        dispatch(getUser(null));
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }; */
-
-  /* const handleUpdate = () => {
-    setLoading(true);
-    auth()
-      .currentUser.updateProfile({
-        displayName: name,
-        phoneNumber: number,
-        photoURL: photo,
-      })
-      .then(() => {
-        setLoading(false);
-        alert('Perfil actualizado');
-      })
-      .catch(error => {
-        alert(error);
-        setLoading(false);
-      });
-  }; */
-
-  
-  /*
-  const usersRef = firestore().collection('users').doc(user?.uid);
-   const createDocument = () => {
-    if (!usersRef) {
-      usersRef.set({
-        name: user.displayName,
-        number: user.phoneNumber,
-        email: user.email,
-        photo: user.photoURL,
-      });
-    }
-  }; */
-
-  useEffect(() => {
-    if (user) {
-      setName(user?.name);
-      setNumber(user?.phoneNumber);
-      setEmail(user?.email);
-      setPhoto(`${user?.photoURL}`);
-    }
-  }, [user]);
-
-
- /*  const handleImagePicker = async () => {
-    const options = {
-      mediaType: 'photo',
-      includeBase64: true,
-      maxHeight: 200,
-      maxWidth: 200,
-    };
-
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = response.assets[0].uri;
-        setPhoto(`${source}`);
-        auth().currentUser.updateProfile({
-          photoURL: `${source}`,
-        });
-        firestore()
-          .collection('users')
-          .doc(user.uid)
-          .update({
-            photoURL: `${source}`,
-          })
-
-          .then(() => {
-            const user = auth().currentUser;
-            dispatch(login(user));
-          });
-      }
-    });
-
-    launchCamera(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = response.assets[0].uri;
-        setPhoto(`${source}`);
-        auth().currentUser.updateProfile({
-          photoURL: `${source}`,
-        });
-        firestore()
-          .collection('users')
-          .doc(user.uid)
-          .update({
-            photoURL: `${source}`,
-          })
-
-          .then(() => {
-            const user = auth().currentUser;
-            dispatch(login(user));
-          });
-      }
-    });
-  }; */
-
+ 
   const drawer = useRef(null);
   const [drawerPosition, setDrawerPosition] = useState('right');
-  const changeDrawerPosition = () => {
-    if (drawerPosition === 'left') {
-      setDrawerPosition('right');
-    } else {
-      setDrawerPosition('left');
-    }
-  };
-
-  updatePassword = () => {
-    auth()
-      .currentUser.updatePassword(pass)
-      .then(() => {
-        alert('Contraseña actualizada');
-      })
-      .catch(error => {
-        alert(error);
-      });
-  };
-
+  
   const onPress = () => {
     console.log('pressed');
 

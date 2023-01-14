@@ -110,6 +110,7 @@ export const AuthProvider = ({ children }) => {
       if (!snapshot.exists) {
         await userRef.set({
           uid: user?.uid || '',
+          email: user?.email,
           displayName: user?.displayName || '',
           apellido: user?.apellido || '',
           phoneNumber: user?.phoneNumber || '',

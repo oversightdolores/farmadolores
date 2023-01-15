@@ -1,61 +1,8 @@
 import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import moment from 'moment';
-import {useDispatch, useSelector} from 'react-redux';
-import {selectFarmacias} from '../redux/reducer';
 import {useNavigation} from '@react-navigation/native';
 import {Rating} from '@rneui/themed';
-
-
-function getColorBySchedule(schedule) {
-  const currentTime = new Date();
-  let currentHour = currentTime.getHours();
-  let currentMinutes = currentTime.getMinutes();
-  const currentDate = currentTime.getDate();
-  const currentMonth = currentTime.getMonth();
-  const currentYear = currentTime.getFullYear();
-  
-  //open time
-  let openHour = schedule[0].split(" ")[0].split(":")[0];
-  let openMinutes = schedule[0].split(" ")[0].split(":")[1];
-  let openAmPm = schedule[0].split(" ")[1];
-  //closing time
-  let closingHour = schedule[1].split(" ")[0].split(":")[0];
-  let closingMinutes = schedule[1].split(" ")[0].split(":")[1];
-  let closingAmPm = schedule[1].split(" ")[1];
-  
-  if(openAmPm === "PM" && openHour!=="12"){
-    openHour = parseInt(openHour) + 12;
-  }
-  if(openAmPm === "AM" && openHour==="12"){
-    openHour = "00";
-  }
-  
-  if(closingAmPm === "PM" && closingHour!=="12"){
-    closingHour = parseInt(closingHour) + 12;
-  }
-  if(closingAmPm === "AM" && closingHour==="12"){
-    closingHour = "00";
-  }
-  
-  //create date object with the open and closing time
-  const openTime = new Date(currentYear, currentMonth, currentDate, openHour, openMinutes);
-  const closingTime = new Date(currentYear, currentMonth, currentDate, closingHour, closingMinutes);
-  //create date object with current time
-  const current = new Date(currentYear, currentMonth, currentDate, currentHour, currentMinutes);
-  
-  if (current >= openTime && current < closingTime) {
-    return <View style={{backgroundColor: 'succes', alignItems:'center', borderRadius: 8}} >
-      <Text style={{fontWeight:'bold', color:'White'}}>Abierto</Text></View>;;
-    } else if (current >= closingTime - 30 * 60 * 1000 && current < closingTime) {
-    return <View style={{backgroundColor: 'warning', justifyContent:'center', alignItems:'center', borderRadius: 8}} >
-      <Text style={{fontWeight:'bold', color:'White'}}>Cierra pronto</Text></View>;;
-    } else {
-    return <View style={{backgroundColor: 'tomato', justifyContent:'center', alignItems:'center', borderRadius: 8}} >
-      <Text style={{fontWeight:'bold', color:'White'}}>Cerrado</Text></View>;
-    }
-    }
-
+import { Horarios } from './Horarios';
 
 
 export default function CardsFarm({
@@ -98,7 +45,7 @@ export default function CardsFarm({
           </View>
         </View>
           <View style={styles.cardHeaderRight}>
-            {getColorBySchedule(horario)}
+            <Horarios horarios={horario} />
           </View>
       </View>
       <View style={styles.cardBody}>

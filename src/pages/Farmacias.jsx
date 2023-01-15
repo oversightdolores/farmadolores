@@ -13,7 +13,7 @@ import Details from './Details';
 const Farmacias = () => {
   const data = useSelector(selectFarmacias);
   const navigation = useNavigation();
-  console.log(data)
+
   return (
     <View style={{flex: 1}}>
       <FlatList

@@ -17,36 +17,15 @@ import CardsFarm from './CardsFarm';
 const Turnos = ({navigation, rute}) => {
   const f = useSelector(selectFarmacias);
 
-  const prueba = 'es la prueb de la farmacia';
-
-  let col1 = '#00ff0dff';
-  let col2 = '#087a41ff';
-  const [color, setColor] = useState(col1);
-
   const Fecha = moment().format('M/D/YYYY');
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (color === col1) {
-        setColor(col2);
-      } else {
-        setColor(col1);
-      }
-    }, 500);
-    return () => clearInterval(interval);
-  }, [color]);
-
-/*   for (let i = 0; i < f.length; i++) {
-    for (let j = 0; j < f[i].turn.length; j++) {
-      const turno = f[i].turn[j] === Fecha;
-
-      if (turno) { */
       const turno = f.find(pharmacy => pharmacy.turn.find(t => t === Fecha));
         return turno ? (
           <View style={styles.turnosCont}>
             <View style={styles.turnos}>
               <Text style={styles.turnosText}>De Turno Hoy</Text>
               <CardsFarm
+                turno={turno ? true : false}
                 detail={turno.detail}
                 gps={turno.gps}
                 horario={turno.horario}

@@ -13,6 +13,7 @@ export default function CardsFarm({
   gps,
   detail,
   horario,
+  turno,
   id,
 }) {
   const navigation = useNavigation();
@@ -45,7 +46,12 @@ export default function CardsFarm({
           </View>
         </View>
           <View style={styles.cardHeaderRight}>
+            {
+              turno ? <View style={{backgroundColor: 'green', justifyContent:'center', alignItems:'center', borderRadius: 10, width:100}} >
+              <Text style={{fontWeight:'bold', color:'White', padding: 2, fontSize:10}}>De turno</Text></View>
+              :
             <Horarios horarios={horario} />
+            }
           </View>
       </View>
       <View style={styles.cardBody}>

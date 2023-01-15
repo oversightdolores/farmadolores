@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation,DrawerActions} from '@react-navigation/native';
 import React, {useEffect, useRef, useState, useContext} from 'react';
 import {
   DrawerLayoutAndroid,
@@ -13,15 +13,12 @@ import {
   TouchableOpacity,
   Switch
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {auth} from '../components/firebaseConfig';
-import firestore from '@react-native-firebase/firestore';
-import {login, logout, selectUser, getData} from '../redux/reducer';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
 import authContext from '../components/context/AutContext';
 import ThemeContext from '../components/context/ThemeContext';
-import {async} from '@firebase/util';
+
 import {Icon} from '@rneui/themed';
+import imgDefault from '../assets/user.png'
 import {
   TextInput,
   Avatar,
@@ -30,6 +27,7 @@ import {
   TouchableRipple,
   
   TouchableHighlight,
+  Drawer,
 } from 'react-native-paper';
 import {LOGOUT} from '../redux/constants';
 import {getUser} from '../redux/action';
@@ -38,17 +36,23 @@ import {getUser} from '../redux/action';
 const Perfil = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const {user, logout} = useContext(authContext)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const isDarkTheme = 'true';
 
-
-console.log('userPerfil',user)
-
-  const {width, height} = useWindowDimensions();
-
-  const dispatch = useDispatch();
-  //const user = auth().currentUser;
+  console.log(isDrawerOpen)
 
   const navigation = useNavigation();
+
+  const openDrawer = () => {
+    drawer.current.openDrawer();
+    setIsDrawerOpen(true);
+  };
+
+  const closeDrawer = () => {
+  drawer.current.closeDrawer();
+    setIsDrawerOpen(false);
+  };
+  
 useEffect(() => {
   user.photoURL
 },[user])
@@ -60,9 +64,7 @@ useEffect(() => {
         <View
           style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
           <Avatar.Image
-            source={{
-              uri: `${user?.photoURL}`,
-            }}
+            source={user.photoURL ? { uri: user.photoURL  }: imgDefault}
             size={40}
           />
           <View style={{marginLeft: 15, flexDirection: 'column'}}>
@@ -75,14 +77,13 @@ useEffect(() => {
       headerRight: () => (
         <Pressable
           style={{marginRight: 10}}
-          onPress={() => {
-            drawer.current.openDrawer();
-          }}>
+          onPress={() => (isDrawerOpen ? closeDrawer() : openDrawer())}>
+
           <Icon name="menu" size={30} color="#000" />
         </Pressable>
       ),
     });
-  }, [navigation]);
+  }, [navigation,isDrawerOpen]);
 
   reportProblem = () => {
     navigation.navigate('Reportar');
@@ -110,9 +111,7 @@ useEffect(() => {
       <View style={styles.userInfoSection}>
         <View style={{flexDirection: 'row', marginTop: 15}}>
           <Avatar.Image
-            source={{
-              uri: `${user?.photoURL}`,
-            }}
+            source={user.photoURL ? { uri: user.photoURL  }: imgDefault}
             size={50}
           />
           <View style={{marginLeft: 15, flexDirection: 'column'}}>

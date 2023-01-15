@@ -13,16 +13,13 @@ import {
 } from 'react-native';
 import {Modal} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectUser, login, logout} from '../redux/reducer';
+import {selectUser} from '../redux/reducer';
 import {TextInput, Alert, HelperText} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
-import {auth} from '../components/firebaseConfig';
-import {Ionicons} from '@expo/vector-icons';
-import firestore from '@react-native-firebase/firestore';
 import GoogleLogin from '../components/GoogleLogin';
 import { useContext } from 'react';
 import AuthContext from '../components/context/AutContext';
-const {width, height} = Dimensions.get('window');
+const { height} = Dimensions.get('window');
 
 export default function Login() {
   const {login, resetPassword} = useContext(AuthContext)
@@ -49,60 +46,6 @@ export default function Login() {
 
 
   
-
-  /* useEffect(() => {}, []);
-
-  const handleLogin = () => {
-    setLoading(true);
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(response => {
-        const uid = response.user.uid;
-        const usersRef = firestore().collection('users');
-        usersRef
-          .doc(uid)
-          .get()
-          .then(firestoreDocument => {
-            if (!firestoreDocument.exists) {
-              alert('User does not exist anymore.');
-              return;
-            }
-            const user = firestoreDocument.data();
-
-            dispatch(login(user));
-            setLoading(false);
-          })
-          .catch(error => {
-            alert(error);
-            setLoading(false);
-          });
-      })
-      .catch(error => {
-        alert(error);
-        console.log(error);
-        setLoading(false);
-      });
-  };
-
-  const olvidePassword = () => {
-    auth()
-      .sendPasswordResetEmail(resetMail)
-      .then(
-        () => alert('Se envio un correo para restablecer la contraseña'),
-        setResetMail(''),
-        setVisible(false),
-      )
-
-      .catch(error => {
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-
-        console.error(error);
-      });
-  };
-
-  console.log('estado de ususario', auth().currentUser); */
 
   return (
     <SafeAreaView style={styles.container}>

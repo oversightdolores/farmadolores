@@ -6,6 +6,58 @@ import {selectFarmacias} from '../redux/reducer';
 import {useNavigation} from '@react-navigation/native';
 import {Rating} from '@rneui/themed';
 
+
+function getColorBySchedule(schedule) {
+  const currentTime = new Date();
+  let currentHour = currentTime.getHours();
+  let currentMinutes = currentTime.getMinutes();
+  const currentDate = currentTime.getDate();
+  const currentMonth = currentTime.getMonth();
+  const currentYear = currentTime.getFullYear();
+  
+  //open time
+  let openHour = schedule[0].split(" ")[0].split(":")[0];
+  let openMinutes = schedule[0].split(" ")[0].split(":")[1];
+  let openAmPm = schedule[0].split(" ")[1];
+  //closing time
+  let closingHour = schedule[1].split(" ")[0].split(":")[0];
+  let closingMinutes = schedule[1].split(" ")[0].split(":")[1];
+  let closingAmPm = schedule[1].split(" ")[1];
+  
+  if(openAmPm === "PM" && openHour!=="12"){
+    openHour = parseInt(openHour) + 12;
+  }
+  if(openAmPm === "AM" && openHour==="12"){
+    openHour = "00";
+  }
+  
+  if(closingAmPm === "PM" && closingHour!=="12"){
+    closingHour = parseInt(closingHour) + 12;
+  }
+  if(closingAmPm === "AM" && closingHour==="12"){
+    closingHour = "00";
+  }
+  
+  //create date object with the open and closing time
+  const openTime = new Date(currentYear, currentMonth, currentDate, openHour, openMinutes);
+  const closingTime = new Date(currentYear, currentMonth, currentDate, closingHour, closingMinutes);
+  //create date object with current time
+  const current = new Date(currentYear, currentMonth, currentDate, currentHour, currentMinutes);
+  
+  if (current >= openTime && current < closingTime) {
+    return <View style={{backgroundColor: 'succes', alignItems:'center', borderRadius: 8}} >
+      <Text style={{fontWeight:'bold', color:'White'}}>Abierto</Text></View>;;
+    } else if (current >= closingTime - 30 * 60 * 1000 && current < closingTime) {
+    return <View style={{backgroundColor: 'warning', justifyContent:'center', alignItems:'center', borderRadius: 8}} >
+      <Text style={{fontWeight:'bold', color:'White'}}>Cierra pronto</Text></View>;;
+    } else {
+    return <View style={{backgroundColor: 'tomato', justifyContent:'center', alignItems:'center', borderRadius: 8}} >
+      <Text style={{fontWeight:'bold', color:'White'}}>Cerrado</Text></View>;
+    }
+    }
+
+
+
 export default function CardsFarm({
   name,
   dir,
@@ -18,58 +70,6 @@ export default function CardsFarm({
 }) {
   const navigation = useNavigation();
 
-  const [date, setDate] = useState(moment().format('DD/MM/YYYY'));
-  const data = useSelector(selectFarmacias);
-  const [rating, setRating] = useState(10);
-
-  const [farm, setFarm] = useState([]);
-
-  const [hora, setHora] = useState(moment().format('LT'));
-
-  const load = false;
-  var color = '';
-  const hs = () => {
-    for (let i = 0; i < data.length; i++) {
-      for (let j = 0; j < data[i].horario.length; j++) {
-        if (data[i].horario[j] >= '08:00' && data[i].horario[j] <= '12:00') {
-          return (color = 'green');
-        } else if (
-          data[i].horario[j] >= '12:00' &&
-          data[i].horario[j] <= '12:30'
-        ) {
-          return (color = 'yellow');
-        } else if (
-          data[i].horario[j] >= '12:30' &&
-          data[i].horario[j] <= '16:00'
-        ) {
-          return (color = 'red');
-        } else if (
-          data[i].horario[j] >= '16:00' &&
-          data[i].horario[j] <= '20:00'
-        ) {
-          return (color = 'green');
-        } else if (
-          data[i].horario[j] >= '20:00' &&
-          data[i].horario[j] <= '20:30'
-        ) {
-          return (color = 'yellow');
-        } else if (
-          data[i].horario[j] >= '20:30' &&
-          data[i].horario[j] <= '24:00'
-        ) {
-          return (color = 'red');
-        } else if (
-          data[i].horario[j] >= '00:00' &&
-          data[i].horario[j] <= '08:00'
-        ) {
-          return (color = 'red');
-        }
-      }
-    }
-  };
-  useEffect(() => {
-    hs();
-  }, [hora, rating]);
 
   const onPress = e => {
     console.log('pressed');
@@ -86,8 +86,7 @@ export default function CardsFarm({
     });
   };
 
-  const cool = hs();
-
+ 
   return (
     <View style={styles.card} key={id}>
       <View style={styles.cardHeader}>
@@ -98,6 +97,9 @@ export default function CardsFarm({
             <Text style={styles.dir}>{dir}</Text>
           </View>
         </View>
+          <View style={styles.cardHeaderRight}>
+            {getColorBySchedule(horario)}
+          </View>
       </View>
       <View style={styles.cardBody}>
         <Image style={styles.banner} source={{uri: detail}} />
@@ -146,6 +148,7 @@ const styles = StyleSheet.create({
 
   cardHeaderRight: {
     flexDirection: 'row',
+    borderRadius: 8
   },
   cardBody: {
     padding: 10,

@@ -19,50 +19,8 @@ const Stack = createNativeStackNavigator();
 
 export default function Nav() {
  const {isLoggedIn, user} = useContext(authContext)
-/*   useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged((user) => {
-      if (user) {
-        setIsLoggedIn(true);
-        setUser(user);
-      } else {
-        setIsLoggedIn(false);
-        setUser(null);
-      }
-    });
-    return () => unsubscribe();
-  }, []);
-  const getUserData = async (userId) => {
-    try {
-        const userRef = firestore().doc(`users/${userId}`);
-        const userSnapshot = await userRef.get();
-      
-        setUserdata(userSnapshot.data());
-    } catch (error) {
-        console.log(error);
-    }
-}
 
-useEffect(() => {
-  if (user) {
-      getUserData(user.uid);
-  }
-}, [user]);
 
- */
-    
-
-/* 
-  // Handle user state changes
-  function onAuthStateChanged(user) {
-    setUser(user);
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
- */
-  console.log('este es el Nav', user)
 
   return (
     <>

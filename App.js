@@ -1,12 +1,14 @@
 import store from './src/redux/store';
+import { useColorScheme } from 'react-native';
 import { useState, useEffect, useContext } from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import Nav from './src/components/Nav';
-import {NavigationContainer} from '@react-navigation/native';
-import ThemeContext from './src/components/context/ThemeContext';
+import {NavigationContainer,  DefaultTheme, DarkTheme,} from '@react-navigation/native';
 import Splash from './src/components/Splash';
-import AuthContext, { AuthProvider } from './src/components/context/AutContext'
+import { AuthProvider } from './src/components/context/AutContext'
+import ThemeContext, {ThemeProvider}  from './src/components/context/ThemeContext'
+
 
 
 const colorBtns = {
@@ -27,23 +29,19 @@ const colorBtns = {
 
 
 export default function App() {
-  const { user, isLoggedIn, login, register, logout } = useContext(AuthContext);
-  const [theme, setTheme] = useState('light');
+  const {theme} = useContext(ThemeContext)
   const [isLoad, setIsLoad] = useState(true);
   useEffect(() => {
     setTimeout(() => {
       setIsLoad(false);
     }, 2000);
   }, []);
-  console.log('este es el App', isLoggedIn)
 
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  };
+  
   return (
     <SafeAreaProvider>
+      <ThemeProvider>
       <AuthProvider>
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <Provider store={store}>
         <NavigationContainer>
         {isLoad ? 
@@ -54,8 +52,8 @@ export default function App() {
          }
         </NavigationContainer>
       </Provider>
-     </ThemeContext.Provider>
      </AuthProvider>
+     </ThemeProvider>
     </SafeAreaProvider>
   );
 }

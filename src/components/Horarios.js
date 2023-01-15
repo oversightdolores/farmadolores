@@ -1,88 +1,51 @@
-import { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
-import moment from 'moment'
-import {app} from './firebaseConfig'
-import {getFirestore, collection, query, where, doc, getDocs, onSnapshot} from 'firebase/firestore'
-import {
-    Box,
-    Text,
-    Avatar,
-    Heading,
-    Stack,   
-    HStack, 
-    Pressable,
-    Link,
-  } from "native-base";
+import { View, Text } from "react-native";
+
+
+export const Horarios = ({horarios}) => {
+  const currentTime = new Date();
+  let currentHour = currentTime.getHours();
+  let currentMinutes = currentTime.getMinutes();
+  const currentDate = currentTime.getDate();
+  const currentMonth = currentTime.getMonth();
+  const currentYear = currentTime.getFullYear();
   
-
-
-
-  const Horarios = () => {
-
-    const cols = () => {
-      return 'danger.600'
-    }
-
-    const [hor, setHor] = useState([])
-    const [aper, setAper] = useState('')
-    const db = getFirestore(app)
-    const open = "#3cb371";
-    const close = "#d5303e";
-    const caseClosed = "#e5be01";
-    
-     const [hora, setHora] = useState(moment().format("LT"));
-    
-     const getAllData = () => {
-        const q = query(collection(db, "farmacias"));
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          const far = [];
-          querySnapshot.forEach((doc) => {
-              far.push(doc.data());
-          });
-          
-    
-          setHor(far) 
-          //setLoading(false)
-    
-        });
-        console.log(hor)
-      
-        return () => unsubscribe()
-    
-    }; 
-    
-      useEffect(() => {
-        getAllData()
-       
-      }, []) 
-
-
-      /* for (let i = 0; i < hor.length; i++) {
-        for (let j = 0; j < hor[j].horario.length; i++) {
-          if(hor[i].horario[j] === hora) {
-            console.log('es la hora')
-          }
-          else {
-            console.log('no es la hora')
-          }
-          
-        }
-        
-      } */
-    
-    
-  return <Div style={styles.abierto} />
-    
+  //open time
+  let openHour = horarios[0].split(" ")[0].split(":")[0];
+  let openMinutes = horarios[0].split(" ")[0].split(":")[1];
+  let openAmPm = horarios[0].split(" ")[1];
+  //closing time
+  let closingHour = horarios[1].split(" ")[0].split(":")[0];
+  let closingMinutes = horarios[1].split(" ")[0].split(":")[1];
+  let closingAmPm = horarios[1].split(" ")[1];
   
-  
+  if(openAmPm === "PM" && openHour!=="12"){
+    openHour = parseInt(openHour) + 12;
   }
-  export default Horarios;
-
-
-
-
-  const styles = StyleSheet.create({
-    abierto: {
-      backgroundColor: 'danger.500'
+  if(openAmPm === "AM" && openHour==="12"){
+    openHour = "00";
+  }
+  
+  if(closingAmPm === "PM" && closingHour!=="12"){
+    closingHour = parseInt(closingHour) + 12;
+  }
+  if(closingAmPm === "AM" && closingHour==="12"){
+    closingHour = "00";
+  }
+  
+  //create date object with the open and closing time
+  const openTime = new Date(currentYear, currentMonth, currentDate, openHour, openMinutes);
+  const closingTime = new Date(currentYear, currentMonth, currentDate, closingHour, closingMinutes);
+  //create date object with current time
+  const current = new Date(currentYear, currentMonth, currentDate, currentHour, currentMinutes);
+  
+  if (current >= openTime && current < closingTime) {
+    return <View style={{backgroundColor: 'succes', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
+      <Text style={{fontWeight:'bold', color:'White', padding: 2, fontSize:10}}>Abierto</Text></View>;;
+    } else if (current >= closingTime - 30 * 60 * 1000 && current < closingTime) {
+    return <View style={{backgroundColor: 'warning', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
+      <Text style={{fontWeight:'bold', color:'White', padding: 2, fontSize:10}}>Cierra pronto</Text></View>;;
+    } else {
+    return <View style={{backgroundColor: 'tomato', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
+      <Text style={{fontWeight:'bold', color:'White', padding: 2, fontSize:10}}>Cerrado</Text></View>;
     }
-  })
+    }

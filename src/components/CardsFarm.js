@@ -1,10 +1,9 @@
 import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import moment from 'moment';
-import {useDispatch, useSelector} from 'react-redux';
-import {selectFarmacias} from '../redux/reducer';
 import {useNavigation} from '@react-navigation/native';
 import {Rating} from '@rneui/themed';
+import { Horarios } from './Horarios';
+
 
 export default function CardsFarm({
   name,
@@ -18,58 +17,6 @@ export default function CardsFarm({
 }) {
   const navigation = useNavigation();
 
-  const [date, setDate] = useState(moment().format('DD/MM/YYYY'));
-  const data = useSelector(selectFarmacias);
-  const [rating, setRating] = useState(10);
-
-  const [farm, setFarm] = useState([]);
-
-  const [hora, setHora] = useState(moment().format('LT'));
-
-  const load = false;
-  var color = '';
-  const hs = () => {
-    for (let i = 0; i < data.length; i++) {
-      for (let j = 0; j < data[i].horario.length; j++) {
-        if (data[i].horario[j] >= '08:00' && data[i].horario[j] <= '12:00') {
-          return (color = 'green');
-        } else if (
-          data[i].horario[j] >= '12:00' &&
-          data[i].horario[j] <= '12:30'
-        ) {
-          return (color = 'yellow');
-        } else if (
-          data[i].horario[j] >= '12:30' &&
-          data[i].horario[j] <= '16:00'
-        ) {
-          return (color = 'red');
-        } else if (
-          data[i].horario[j] >= '16:00' &&
-          data[i].horario[j] <= '20:00'
-        ) {
-          return (color = 'green');
-        } else if (
-          data[i].horario[j] >= '20:00' &&
-          data[i].horario[j] <= '20:30'
-        ) {
-          return (color = 'yellow');
-        } else if (
-          data[i].horario[j] >= '20:30' &&
-          data[i].horario[j] <= '24:00'
-        ) {
-          return (color = 'red');
-        } else if (
-          data[i].horario[j] >= '00:00' &&
-          data[i].horario[j] <= '08:00'
-        ) {
-          return (color = 'red');
-        }
-      }
-    }
-  };
-  useEffect(() => {
-    hs();
-  }, [hora, rating]);
 
   const onPress = e => {
     console.log('pressed');
@@ -86,8 +33,7 @@ export default function CardsFarm({
     });
   };
 
-  const cool = hs();
-
+ 
   return (
     <View style={styles.card} key={id}>
       <View style={styles.cardHeader}>
@@ -98,6 +44,9 @@ export default function CardsFarm({
             <Text style={styles.dir}>{dir}</Text>
           </View>
         </View>
+          <View style={styles.cardHeaderRight}>
+            <Horarios horarios={horario} />
+          </View>
       </View>
       <View style={styles.cardBody}>
         <Image style={styles.banner} source={{uri: detail}} />
@@ -146,6 +95,7 @@ const styles = StyleSheet.create({
 
   cardHeaderRight: {
     flexDirection: 'row',
+    borderRadius: 8
   },
   cardBody: {
     padding: 10,

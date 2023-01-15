@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
-import { View, TextInput, Button, Image, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { View, Button, Image, Alert, StyleSheet, TouchableOpacity, TurboModuleRegistry } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import AuthContext  from '../components/context/AutContext';
 import { themeContext } from '../components/context/ThemeContext';
 import imgDefault from '../assets/user.png'
@@ -8,6 +9,7 @@ import firestore from  '@react-native-firebase/firestore'
 //import { updateInfo, updateProfileImage } from '../components/context/AutContext';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {black} from 'react-native-paper/lib/typescript/styles/colors';
+import {set} from 'immer/dist/internal';
 
 
 function EditarPerfil({route}) {
@@ -25,7 +27,7 @@ function EditarPerfil({route}) {
   });
   
   console.log('userInfo', userInfo)
-
+  useEffect(()=>{setImage(user.photoURL)},[user,image])
 
   const handleSaveChanges = async () => {
     try {
@@ -106,26 +108,31 @@ function EditarPerfil({route}) {
       <Image style={styles.image} source={image ? { uri: image  }: imgDefault}  />
       </TouchableOpacity>
       <TextInput style={styles.input}
-        placeholder="Nombre"
-        placeholderTextColor={'gray'}
+         label="Nombre"
+         mode="outlined"
+         required={true}
+         autoCapitalize="none"
         value={userInfo.displayName}
         onChangeText={(text) => setUserInfo({...userInfo, displayName:text})}
       />
       <TextInput style={styles.input}
-        placeholder="Apellido"
+        label="Apellido"
+        mode="outlined"
         placeholderTextColor={'gray'}
         value={userInfo.apellido}
         onChangeText={(text) => setUserInfo({...userInfo, apellido:text})}
       />
       <TextInput style={styles.input}
+        label="Telefono"
+        mode="outlined"
         keyboardType='number-pad'
         placeholderTextColor={'gray'}
-        placeholder="Tel"
         value={userInfo.phoneNumber}
         onChangeText={(text) => setUserInfo({...userInfo, phoneNumber:text})}
       />
       <TextInput style={styles.input}
-        placeholder="Dir"
+        label="Direccion"
+        mode="outlined" 
         placeholderTextColor={'gray'}
         value={userInfo.dir}
         onChangeText={(text) => setUserInfo({...userInfo, dir:text})}
@@ -145,9 +152,8 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    padding: 10,
     marginVertical: 10,
-    borderWidth: 1,
+   
     borderColor: 'gray',
     borderRadius: 10,
     color: 'black'

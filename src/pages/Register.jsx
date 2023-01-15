@@ -10,19 +10,12 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {selectUser, login, logout} from '../redux/reducer';
+import {useDispatch} from 'react-redux';
 import AuthContext from '../components/context/AutContext';
-
-import {CommonActions} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
-import {auth} from '../components/firebaseConfig';
-import {Ionicons} from '@expo/vector-icons';
-import firestore from '@react-native-firebase/firestore';
 import {TextInput} from 'react-native-paper';
 
-const {width, height} = Dimensions.get('window');
-
+const { height} = Dimensions.get('window');
 export default function Register() {
   const {register} = useContext(AuthContext)
   const [displayName, setDisplayName] = useState('');
@@ -32,47 +25,7 @@ export default function Register() {
   const [errors, setErrors] = useState('');
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
-  const user = useSelector(selectUser);
   const [loading, setLoading] = useState(false);
-
-/*   const handleLogin = () => {
-
-    setLoading(true);
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(response => {
-        const uid = response.user.uid;
-        const data = {
-          id: uid,
-          email,
-          displayName,
-          apellido,
-        };
-        const usersRef = firestore().collection('users');
-        usersRef
-          .doc(uid)
-          .set(data)
-          .then(() => {
-            auth().currentUser.updateProfile({
-              displayName: displayName,
-              apellido: apellido,
-            });
-            dispatch(login(data));
-            setLoading(false);
-          })
-          .catch(error => {
-            alert(error);
-            setLoading(false);
-          });
-      })
-      .catch(error => {
-        alert(error);
-        setLoading(false);
-      });
-  }; */
-
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>

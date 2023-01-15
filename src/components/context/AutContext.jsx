@@ -11,7 +11,7 @@ import {Alert} from 'react-native';
 
 
 const AuthContext = createContext({
-  isLoggedIn: false,
+  isLoggedIn: 'false',
   user: null,
   login: () => {},
   logout: () => {},
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
-      console.log('suerAuth', user)
+      
       if (user) {
         setIsLoading(true)
         const userRef = firestore().collection('users').doc(user.uid);
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
           const data = snapshot.data();
           setUser(data);
         });
-
+        console.log(user)
       } else {
         setUser(null);
       }
@@ -68,8 +68,13 @@ export const AuthProvider = ({ children }) => {
       const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
       const user = response.user;
       await firestore().collection('users').doc(user.uid).set({
-        displayName,
-        email,
+        uid: user.uid,
+        displayName: displayName,
+        email: email,
+        apellido: apellido,
+        photoURL:'',
+        dir: '',
+        phoneNumber: '0000000'
       });
       return setUser(user);
     } catch (error) {
@@ -119,6 +124,7 @@ export const AuthProvider = ({ children }) => {
           photoURL: user?.photoURL || ''
         });
       }
+      console.log('snapshot', userRef.porviderData)
       return setUser(snapshot);
 
   } catch (error) {
@@ -140,12 +146,12 @@ export const AuthProvider = ({ children }) => {
       try {
         const response = await fetch(uri);
         const blob = await response.blob();
-        const ref = storage().ref(`users/${uid}/image`);
+        const ref = storage().ref(`users/${user.uid}/image`);
         const snapshot = await ref.put(blob);
         const url = await snapshot.ref.getDownloadURL();
         await firestore()
           .collection('users')
-          .doc(uid)
+          .doc(user.uid)
           .update({ profileImage: url });
          
 

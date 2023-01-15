@@ -36,32 +36,29 @@ const Turnos = ({navigation, rute}) => {
     return () => clearInterval(interval);
   }, [color]);
 
-  for (let i = 0; i < f.length; i++) {
+/*   for (let i = 0; i < f.length; i++) {
     for (let j = 0; j < f[i].turn.length; j++) {
       const turno = f[i].turn[j] === Fecha;
 
-      if (turno) {
-        return (
+      if (turno) { */
+      const turno = f.find(pharmacy => pharmacy.turn.find(t => t === Fecha));
+        return turno ? (
           <View style={styles.turnosCont}>
             <View style={styles.turnos}>
               <Text style={styles.turnosText}>De Turno Hoy</Text>
               <CardsFarm
-                detail={f[i].detail}
-                gps={f[i].gps}
-                horario={f[i].horario}
-                name={f[i].name}
-                dir={f[i].dir}
-                tel={f[i].tel}
-                image={f[i].image}
+                detail={turno.detail}
+                gps={turno.gps}
+                horario={turno.horario}
+                name={turno.name}
+                dir={turno.dir}
+                tel={turno.tel}
+                image={turno.image}
               />
             </View>
           </View>
-        );
-      }
-    }
-  }
-};
-
+        ): null
+        }
 export default Turnos;
 
 const styles = StyleSheet.create({

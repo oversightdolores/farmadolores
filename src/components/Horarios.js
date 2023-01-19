@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import {Text,View} from "react-native";
 
 
 export const Horarios = ({horarios}) => {
@@ -38,14 +38,18 @@ export const Horarios = ({horarios}) => {
   //create date object with current time
   const current = new Date(currentYear, currentMonth, currentDate, currentHour, currentMinutes);
   
+
+  //console.log(`${currentHour}:${currentMinutes}`)
+  console.log(closingAmPm)
+
   if (current >= openTime && current < closingTime) {
     return <View style={{backgroundColor: 'succes', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
-      <Text style={{fontWeight:'bold', color:'White', padding: 2, fontSize:10}}>Abierto</Text></View>;;
+      <Text style={{fontWeight:'bold', color:'#fff', padding: 2, fontSize:10}}>Abierto</Text></View>;;
     } else if (current >= closingTime - 30 * 60 * 1000 && current < closingTime) {
     return <View style={{backgroundColor: 'warning', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
-      <Text style={{fontWeight:'bold', color:'White', padding: 2, fontSize:10}}>Cierra pronto</Text></View>;;
+      <Text style={{fontWeight:'bold', color:'#fff', padding: 2, fontSize:10}}>Cierra pronto</Text></View>;;
     } else {
     return <View style={{backgroundColor: 'tomato', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
-      <Text style={{fontWeight:'bold', color:'White', padding: 2, fontSize:10}}>Cerrado</Text></View>;
+      <Text style={{fontWeight:'bold', color:'#fff', padding: 2, fontSize:10}}>Cerrado</Text></View>;
     }
     }

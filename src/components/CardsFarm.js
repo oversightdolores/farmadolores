@@ -1,8 +1,7 @@
-import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {Rating} from '@rneui/themed';
-import { Horarios } from './Horarios';
+import React from 'react';
+import {Image,Pressable,StyleSheet,Text,View} from 'react-native';
+import {Horarios} from './Horarios';
 
 
 export default function CardsFarm({
@@ -19,7 +18,6 @@ export default function CardsFarm({
 
 
   const onPress = e => {
-    console.log('pressed');
 
     navigation.navigate('Details', {
       id: id,

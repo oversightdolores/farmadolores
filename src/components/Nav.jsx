@@ -1,4 +1,5 @@
 import {useContext, useEffect, useState} from 'react';
+import {Text} from 'react-native'
 import {auth} from './firebaseConfig';
 import firestore from '@react-native-firebase/firestore';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -10,7 +11,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Bar from './Bar';
 import Reportar from './Reportar';
-import authContext from '../components/context/AutContext';
+import authContext from './context/AutContext';
 import EditarPerfil from '../pages/EditarPerfil';
 
 
@@ -25,7 +26,11 @@ export default function Nav() {
   return (
     <>
     
-      {user ? (
+      {
+        isLoggedIn ?
+         <Text>loading...</Text>
+        :
+      user ? (
         
           <>
             <Stack.Navigator>

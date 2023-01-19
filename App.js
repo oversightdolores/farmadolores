@@ -24,6 +24,7 @@ const colorBtns = {
   dark: '#34495E',
   white: '#FFFFFF',
   black: '#000000',
+  gray: '#bdbfc0',
   transparent: 'transparent',
 };
 

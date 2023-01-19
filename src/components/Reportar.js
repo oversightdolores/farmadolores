@@ -1,34 +1,7 @@
+import firestore from '@react-native-firebase/firestore';
 import {useState} from "react";
-import { StyleSheet, View, TextInput, Button } from "react-native";
-import { auth } from '../components/firebaseConfig';
-import firestore from  '@react-native-firebase/firestore'
+import {Button,StyleSheet,TextInput,View} from "react-native";
 
-/* const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 16
-  },
-  input: {
-    width: "100%",
-    marginBottom: 16,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 4
-  },
-  button: {
-    backgroundColor: "#4287f5",
-    padding: 12,
-    borderRadius: 4
-  },
-  buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontWeight: "bold"
-  }
-}); */
 
 const Reportar = ({route}) => {
     const {uid} = route.params
@@ -51,8 +24,8 @@ const Reportar = ({route}) => {
       report.title = "";
       report.description = "";
     } catch (error) {
-      console.log(error);
-      alert("Hubo un error al enviar tu reporte.");
+      
+      alert("Hubo un error al enviar tu reporte, vuelva a intentarlo");
     }
   };
 

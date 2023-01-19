@@ -26,7 +26,7 @@ const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
           const data = snapshot.data();
           setUser(data);
         });
-        console.log(user)
+        
       } else {
         setUser(null);
       }
@@ -88,15 +88,15 @@ export const AuthProvider = ({ children }) => {
       return setUser(response.user);
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
-        console.log('Este email ya esta en uso!');
+        Alert.alert('Este email ya esta en uso!');
       }
   
       if (error.code === 'auth/invalid-email') {
-        console.log('El email ingresado es invalido!');
+        Alert.alert('El email ingresado es invalido!');
       }
 
       if (error.code === 'auth/user-not-found') {
-        console.log('El email ingresado no esta registrado!');
+        Alert.alert('El email ingresado no esta registrado!');
       }
   
       console.error(error.code);
@@ -124,7 +124,6 @@ export const AuthProvider = ({ children }) => {
           photoURL: user?.photoURL || ''
         });
       }
-      console.log('snapshot', userRef.porviderData)
       return setUser(snapshot);
 
   } catch (error) {

@@ -1,36 +1,19 @@
-import {useNavigation,DrawerActions} from '@react-navigation/native';
-import React, {useEffect, useRef, useState, useContext} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React,{useContext,useEffect,useRef,useState} from 'react';
 import {
-  DrawerLayoutAndroid,
-  Image,
-  Pressable,
-  StyleSheet,
-  Button,
-  Text,
-  View,
-  useWindowDimensions,
-  DrawerContentScrollView,
-  TouchableOpacity,
-  Switch
+  Button,DrawerLayoutAndroid,Pressable,
+  StyleSheet,Switch,Text,
+  View
 } from 'react-native';
 
 import authContext from '../components/context/AutContext';
 import ThemeContext from '../components/context/ThemeContext';
 
 import {Icon} from '@rneui/themed';
-import imgDefault from '../assets/user.png'
 import {
-  TextInput,
-  Avatar,
-  Title,
-  Caption,
-  TouchableRipple,
-  
-  TouchableHighlight,
-  Drawer,
+  Avatar,Caption,Title,TouchableRipple
 } from 'react-native-paper';
-import {LOGOUT} from '../redux/constants';
-import {getUser} from '../redux/action';
+import imgDefault from '../assets/user.png';
 
 //const result = await launchImageLibrary(options);
 const Perfil = () => {
@@ -39,7 +22,7 @@ const Perfil = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const isDarkTheme = 'true';
 
-  console.log(isDrawerOpen)
+
 
   const navigation = useNavigation();
 
@@ -94,7 +77,6 @@ useEffect(() => {
   const [drawerPosition, setDrawerPosition] = useState('right');
   
   const onPress = () => {
-    console.log('pressed');
 
     navigation.navigate('EditarPerfil', {
       uid: user?.uid,

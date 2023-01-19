@@ -1,10 +1,9 @@
-import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import moment from 'moment';
-import {useDispatch, useSelector} from 'react-redux';
-import {selectFarmacias} from '../redux/reducer';
 import {useNavigation} from '@react-navigation/native';
-import {Rating} from '@rneui/themed';
+import moment from 'moment';
+import React,{useEffect,useState} from 'react';
+import {Image,Pressable,StyleSheet,Text,View} from 'react-native';
+import {useSelector} from 'react-redux';
+import {selectFarmacias} from '../redux/reducer';
 
 export default function CardsEmer({
   name,
@@ -72,7 +71,6 @@ export default function CardsEmer({
   }, [hora, rating]);
 
   const onPress = e => {
-    console.log('pressed');
 
     navigation.navigate('DetailEmer', {
       id: id,

@@ -1,15 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { View, Button, Image, Alert, StyleSheet, TouchableOpacity, TurboModuleRegistry } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import AuthContext  from '../components/context/AutContext';
-import { themeContext } from '../components/context/ThemeContext';
-import imgDefault from '../assets/user.png'
-import { auth } from '../components/firebaseConfig';
-import firestore from  '@react-native-firebase/firestore'
+import firestore from '@react-native-firebase/firestore';
+import React,{useContext,useEffect,useState} from 'react';
+import {Alert,Button,Image,StyleSheet,TouchableOpacity,View} from 'react-native';
+import {TextInput} from 'react-native-paper';
+import imgDefault from '../assets/user.png';
+import AuthContext from '../components/context/AutContext';
+import {auth} from '../components/firebaseConfig';
 //import { updateInfo, updateProfileImage } from '../components/context/AutContext';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {black} from 'react-native-paper/lib/typescript/styles/colors';
-import {set} from 'immer/dist/internal';
+import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
 
 
 function EditarPerfil({route}) {

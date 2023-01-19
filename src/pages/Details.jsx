@@ -1,8 +1,8 @@
-import { View, Image, ScrollView, Button, Text, StyleSheet, Dimensions, Pressable, Linking } from "react-native";
-import React, { useState, useEffect } from "react";
-import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
+import {useNavigation} from "@react-navigation/native";
+import React,{useEffect,useState} from "react";
+import {Image,Linking,Pressable,ScrollView,StyleSheet,Text,View} from "react-native";
 import Geolocation from 'react-native-geolocation-service';
-import { useNavigation } from "@react-navigation/native";
+import MapView,{Marker,PROVIDER_GOOGLE} from "react-native-maps";
 
 const Details = ( { route } ) => {
   const {name, avatar, banner, gps, horario, dir, tel } = route.params;

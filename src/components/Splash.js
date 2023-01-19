@@ -1,6 +1,6 @@
 ;
-import { View, Image, StyleSheet } from 'react-native';
-import {useState, useEffect} from 'react';
+import {useEffect,useState} from 'react';
+import {Image,StyleSheet,View} from 'react-native';
 
 
 

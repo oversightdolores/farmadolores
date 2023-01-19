@@ -14,6 +14,7 @@ import {useDispatch} from 'react-redux';
 import AuthContext from '../components/context/AutContext';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput} from 'react-native-paper';
+import GoogleLogin from '../components/GoogleLogin';
 
 const { height} = Dimensions.get('window');
 export default function Register() {
@@ -74,15 +75,21 @@ export default function Register() {
           />
         </View>
         <View style={styles.button}>
-          <Button
-            title="Registrarse"
-            color="#009387"
-            onPress={() => register(email,password, displayName, apellido)}
-          />
+          <Pressable
+            style={styles.btnI}
+            
+            onPress={()=>login(email, password)}
+          >
+            <Text style={{fontWeight: 'bold', color:'#009387'}}>Registrarse</Text>
+            </Pressable>
+            <Text style={styles.text}>----- O -----</Text>
+
+        <GoogleLogin />
         </View>
+
         <View style={styles.button}>
-          <Pressable onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.textSign}>Iniciar Sesión</Text>
+          <Pressable onPress={() => navigation.goBack()}>
+            <Text style={styles.text}>volver</Text>
           </Pressable>
         </View>
       </View>
@@ -123,12 +130,25 @@ if (height < 700) {
       fontWeight: 'bold',
     },
     text: {
-      color: 'grey',
+      color: '#bdbfc0',
       marginTop: 5,
+      fontSize: 20,
+      fontWeight: ' bold'
     },
     button: {
       alignItems: 'center',
-      marginTop: 20,
+      marginTop: 5,
+    },
+    btnI: {
+      alignItems: 'center',
+      margin: 10,
+      width: '67%',
+      elevation: 5,
+      border: '1px solid',
+      borderColor: '000',
+      backgroundColor: 'white',
+      padding: 10
+      
     },
     textSign: {
       color: 'grey',
@@ -183,7 +203,18 @@ if (height < 700) {
     },
     button: {
       alignItems: 'center',
-      marginTop: 50,
+      marginTop: 5,
+    },
+    btnI: {
+      alignItems: 'center',
+      margin: 10,
+      width: '67%',
+      elevation: 5,
+      border: '1px solid',
+      borderColor: '000',
+      backgroundColor: 'white',
+      padding: 10
+      
     },
     action: {
       flexDirection: 'row',

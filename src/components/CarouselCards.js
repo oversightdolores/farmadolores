@@ -1,9 +1,9 @@
 import React from "react";
-import { View } from "react-native";
-import Carousel, { Pagination } from "react-native-snap-carousel-v4";
-import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from "./carouselCardItem";
-import { useSelector } from "react-redux";
-import { selectPublicidad } from "../redux/reducer";
+import {View} from "react-native";
+import Carousel from "react-native-snap-carousel-v4";
+import {useSelector} from "react-redux";
+import {selectPublicidad} from "../redux/reducer";
+import CarouselCardItem,{ITEM_WIDTH,SLIDER_WIDTH} from "./carouselCardItem";
 
 const CarouselCards = () => {
   const [index, setIndex] = React.useState(0);

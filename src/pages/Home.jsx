@@ -1,18 +1,9 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {
-  Dimensions,
-  ActivityIndicator,
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  Alert,
-} from 'react-native';
-import {app, auth, onAuthStateChanged} from '../components/firebaseConfig';
-import CarouselCards from '../components/CarouselCards';
 import moment from 'moment';
+import React,{useEffect,useState} from 'react';
+import {
+  SafeAreaView,StyleSheet,View
+} from 'react-native';
+import CarouselCards from '../components/CarouselCards';
 import Turnos from '../components/Turnos';
 
 import {useNavigation} from '@react-navigation/native';

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { StyleSheet, Dimensions, View, Text, Image, ScrollView ,Linking} from "react-native";
-import { Button } from "react-native-paper";
+import React from "react";
+import {Dimensions,Image,Linking,StyleSheet,Text,View} from "react-native";
+import {Button} from "react-native-paper";
 
 
 export const SLIDER_WIDTH = Dimensions.get("window").width + 100;
@@ -10,7 +10,7 @@ const CarouselCardItem = ({ item, index }) => {
  
   
   const onPress = () => {
-    console.log(item.url)
+  
     Linking.openURL(item.url)
     
   };

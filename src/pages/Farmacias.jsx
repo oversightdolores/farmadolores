@@ -1,19 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 //import { getAllData, load, loading} from '../redux/action'
 
-import {Button, Pressable, ScrollView, View, FlatList} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {getFarmacias} from '../redux/action';
-import {loading, selectFarmacias} from '../redux/reducer';
+import {FlatList,View} from 'react-native';
+import {useSelector} from 'react-redux';
 import CardsFarm from '../components/CardsFarm';
-import {useNavigation} from '@react-navigation/native';
-import Perfil from './Perfil';
-import Details from './Details';
+import {selectFarmacias} from '../redux/reducer';
 
 const Farmacias = () => {
   const data = useSelector(selectFarmacias);
-  const navigation = useNavigation();
-  console.log(data)
+  
   return (
     <View style={{flex: 1}}>
       <FlatList

@@ -1,22 +1,14 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {
-  View,
-  Text,
-  Avatar,
-  Heading,
-  Pressable,
-  Linking,
-  StyleSheet,
-} from 'react-native';
 import moment from 'moment';
-import {useSelector, useDispatch} from 'react-redux';
-import {selectFarmacias} from '../redux/reducer';
-import {getFarmacias} from '../redux/action';
+import React,{useEffect,useState} from 'react';
+import {
+  StyleSheet,Text,View
+} from 'react-native';
+import {useDispatch,useSelector} from 'react-redux';
 import CardsFarm from './CardsFarm';
 
 const Turnos = ({navigation, rute}) => {
-  const f = useSelector(selectFarmacias);
-
+  const f = useSelector(state => state.farmacias);
+  const dispatch = useDispatch()
   const prueba = 'es la prueb de la farmacia';
 
   let col1 = '#00ff0dff';
@@ -42,6 +34,7 @@ const Turnos = ({navigation, rute}) => {
 
       if (turno) { */
       const turno = f.find(pharmacy => pharmacy.turn.find(t => t === Fecha));
+      
         return turno ? (
           <View style={styles.turnosCont}>
             <View style={styles.turnos}>

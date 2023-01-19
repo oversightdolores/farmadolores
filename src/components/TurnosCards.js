@@ -1,15 +1,8 @@
-import { Dimensions } from "react-native";
 import {
-  Box,
-  Text,
-  Avatar,
-  Heading,
-  Stack,
-  HStack,
-  Pressable,
-  VStack,
+  Avatar,Box,Heading,HStack,Stack,Text
 } from "native-base";
 import React from "react";
+import {Dimensions} from "react-native";
 
 export default function TurnosCards(props) {
   return (

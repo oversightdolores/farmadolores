@@ -1,11 +1,11 @@
 import moment from 'moment';
 import React,{useEffect,useState} from 'react';
 import {
-  SafeAreaView,StyleSheet,View
+  SafeAreaView,ScrollView,StyleSheet,View
 } from 'react-native';
 import CarouselCards from '../components/CarouselCards';
 import Turnos from '../components/Turnos';
-
+import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 
 export default function Home() {
@@ -40,13 +40,20 @@ export default function Home() {
   //<StatusBar barStyle="darck-content" backgroundColor="#606060ff" />
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView  style={styles.container}>
+      <LinearGradient
+      colors={['#009387', '#2bac83ff', '#fff']}
+      style={styles.linearGradient}
+      >
       <View style={styles.header}>
         <Turnos />
       </View>
+        <ScrollView>
       <View style={styles.body}>
         <CarouselCards />
       </View>
+      </ScrollView>
+      </LinearGradient>
     </SafeAreaView>
   );
 }
@@ -54,18 +61,19 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     justifyContent: 'space-between',
+  },
+  linearGradient: {
+    flex: 1,
+   
   },
   header: {
     flex: 2,
-    backgroundColor: '#fff',
   },
   body: {
     flex: 1,
-    marginTop: -50,
+    
     width: '100%',
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },

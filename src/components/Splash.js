@@ -1,19 +1,12 @@
-;
-import {useEffect,useState} from 'react';
+
 import {Image,StyleSheet,View} from 'react-native';
 
 
 
 
 const Splash = () => {
-    const [isLoading, setIsLoading] = useState(true);
-    useEffect(() => {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 2000);
-      }, []);
-
-    
+  
+    console.log('este es el splash')
 
   return (
     <View style={styles.container}>

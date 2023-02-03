@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react';
-import {Text} from 'react-native'
+import {AppRegistry, Text} from 'react-native'
 import {auth} from './firebaseConfig';
 import firestore from '@react-native-firebase/firestore';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -13,58 +13,29 @@ import Bar from './Bar';
 import Reportar from './Reportar';
 import authContext from './context/AutContext';
 import EditarPerfil from '../pages/EditarPerfil';
+import Loading from './Loading';
+import {PrivateRoute, PublicRoute} from './context/AuthRoutes';
 
 
 //const user = auth.currentUser;
 const Stack = createNativeStackNavigator();
 
 export default function Nav() {
- const {isLoggedIn, user} = useContext(authContext)
+ const {isLoading, isLoggedIn} = useContext(authContext)
+
+console.log(isLoading)
 
 
-
-  return (
-    <>
-    
-      {
-        isLoggedIn ?
-         <Text>loading...</Text>
+return (
+  <>
+    {
+      isLoading ?
+        <Loading />
         :
-      user ? (
-        
-          <>
-            <Stack.Navigator>
-              <Stack.Screen
-                name="Bar"
-                component={Bar}
-                options={{headerShown: false}}
-              />
-              <Stack.Screen name="Details" component={Details} />
-              <Stack.Screen name="DetailEmer" component={DetailEmer} />
-              <Stack.Screen name="Reportar" component={Reportar} />
-              <Stack.Screen name='EditarPerfil' component={EditarPerfil} />
-              {/* <Stack.Screen name="Home" component={Home} />
-              <Stack.Screen name="Farmacias" component={Farmacias} />
-              <Stack.Screen name="Emergencias" component={Emergencias} />
-              <Stack.Screen name="Perfil" component={Perfil} /> */}
-            </Stack.Navigator>
-          </>
-        
-      ) : (
         <>
-          <Stack.Navigator screenOptions={{header: () => null}}>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen
-              name="Register"
-              component={Register}
-              screenOptions={{
-                header: () => null,
-              }}
-            />
-          </Stack.Navigator>
+          {isLoggedIn ? <PrivateRoute /> : <PublicRoute />}
         </>
-      )}
-      
-    </>
-  );
+    }
+  </>
+);
 }

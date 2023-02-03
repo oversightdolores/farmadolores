@@ -1,30 +1,25 @@
 import {useNavigation} from '@react-navigation/native';
 import React,{useContext,useEffect,useRef,useState} from 'react';
 import {
-  Button,DrawerLayoutAndroid,Pressable,
-  StyleSheet,Switch,Text,
+  DrawerLayoutAndroid,Pressable,
+  StyleSheet,Text,
   View
 } from 'react-native';
+import {
+  Avatar,Caption,Title
+} from 'react-native-paper';
 
 import authContext from '../components/context/AutContext';
-import ThemeContext from '../components/context/ThemeContext';
 
 import {Icon} from '@rneui/themed';
-import {
-  Avatar,Caption,Title,TouchableRipple
-} from 'react-native-paper';
 import imgDefault from '../assets/user.png';
+import PerfilDrawer from '../components/PerfilDrawer';
 
-//const result = await launchImageLibrary(options);
 const Perfil = () => {
-  const { theme, toggleTheme } = useContext(ThemeContext);
   const {user, logout} = useContext(authContext)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const isDarkTheme = 'true';
-
-
-
   const navigation = useNavigation();
+  const drawer = useRef(null);
 
   const openDrawer = () => {
     drawer.current.openDrawer();
@@ -32,13 +27,9 @@ const Perfil = () => {
   };
 
   const closeDrawer = () => {
-  drawer.current.closeDrawer();
+    drawer.current.closeDrawer();
     setIsDrawerOpen(false);
   };
-  
-useEffect(() => {
-  user.photoURL
-},[user])
 
   useEffect(() => {
     navigation.setOptions({
@@ -56,206 +47,25 @@ useEffect(() => {
           </View>
         </View>
       ),
-
       headerRight: () => (
         <Pressable
           style={{marginRight: 10}}
           onPress={() => (isDrawerOpen ? closeDrawer() : openDrawer())}>
-
           <Icon name="menu" size={30} color="#000" />
         </Pressable>
       ),
     });
   }, [navigation,isDrawerOpen]);
 
-  reportProblem = () => {
-    navigation.navigate('Reportar');
-  };
-
- 
-  const drawer = useRef(null);
-  const [drawerPosition, setDrawerPosition] = useState('right');
-  
-  const onPress = () => {
-
-    navigation.navigate('EditarPerfil', {
-      uid: user?.uid,
-      displayName: user?.displayName,
-      apellido: user?.apellido,
-      phoneNumber: user?.phoneNumber,
-      dir: user?.dir,
-      photoURL: user?.photoURL
-    });
-  };
-
-  const renderDrawerContent = () => (
-    <View style={styles.drawerContent}>
-      <View style={styles.userInfoSection}>
-        <View style={{flexDirection: 'row', marginTop: 15}}>
-          <Avatar.Image
-            source={user.photoURL ? { uri: user.photoURL  }: imgDefault}
-            size={50}
-          />
-          <View style={{marginLeft: 15, flexDirection: 'column'}}>
-            <Title style={styles.title}>{user?.displayName}</Title>
-          </View>
-        </View>
-        <View style={styles.userInfoSection}>
-          <View style={styles.row}>
-            <Icon name="phone" color="#777777" size={20} />
-            <Text style={{color: '#777777', marginLeft: 20}}>
-              {user?.phoneNumber}
-
-            </Text>
-          </View>
-        </View>
-        <View style={styles.userInfoSection}>
-          <View style={styles.row}>
-            <Icon name="email" color="#777777" size={20} />
-            <Text style={{color: '#777777', marginLeft: 20}}>
-              {user?.email}
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.menuWrapper}>
-          <TouchableRipple onPress={() => {onPress()}}>
-            <View style={styles.menuItem}>
-              <Icon
-                type="material-community"
-                name="account-cog"
-                color="#FF6347"
-                size={25}
-              />
-              <Text style={styles.menuItemText}>Editar Perfil</Text>
-            </View>
-          </TouchableRipple>
-          <Pressable onPress={() => {}}>
-            <View style={styles.menuItem}>
-              <Icon name="lock" color="#FF6347" size={25} />
-              <Text style={styles.menuItemText}>Cambiar Contraseña</Text>
-            </View>
-          </Pressable>
-          <TouchableRipple onPress={() => {}}>
-            <View style={styles.menuItem}>
-              <Icon
-                type="material-community"
-                name="account-check"
-                color="#FF6347"
-                size={25}
-              />
-              <Text style={styles.menuItemText}>Verificar Cuenta</Text>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple
-            onPress={() => {
-              navigation.navigate('Reportar', {uid: user.uid});
-            }}>
-            <View style={styles.menuItem}>
-              <Icon
-                type="material-community"
-                name="account-alert"
-                color="#FF6347"
-                size={25}
-              />
-              <Text style={styles.menuItemText}>Reportar Problema</Text>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={() => {}}>
-            <View style={styles.menuItem}>
-              <Icon
-                type="material-community"
-                name="message-question"
-                color="#FF6347"
-                size={25}
-              />
-              <Text style={styles.menuItemText}>Ayuda</Text>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={() => {}}>
-            <View style={styles.menuItem}>
-              <Icon
-                type="material-community"
-                name="account-question"
-                color="#FF6347"
-                size={25}
-              />
-              <Text style={styles.menuItemText}>Acerca de</Text>
-            </View>
-          </TouchableRipple>
-        </View>
-        <View style={styles.preference}>
-          <Text
-            style={{
-              color: '#777777',
-              fontSize: 16,
-              fontWeight: 'bold',
-              flexDirection: 'column',
-            }}>
-            Preferencias
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 15,
-            }}>
-            <Text style={styles.menuItemText}>Modo Oscuro</Text>
-            
-    <Button title={theme} onPress={toggleTheme} />
-  
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 15,
-            }}>
-            <Text style={styles.menuItemText}>Notificaciones</Text>
-            <Switch value={isDarkTheme} onValueChange={() => {}} />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 15,
-            }}>
-            <Text style={styles.menuItemText}>Idioma</Text>
-            <Switch value={isDarkTheme} onValueChange={() => {}} />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 15,
-            }}>
-            <Pressable
-              onPress={() => {
-                logout();
-              }}>
-              <Text
-                style={{
-                  color: '#FF6347',
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  flexDirection: 'column',
-                }}>
-                Cerrar Sesión
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-      </View>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       <DrawerLayoutAndroid
         ref={drawer}
         drawerWidth={300}
-        drawerPosition={drawerPosition}
-        renderNavigationView={renderDrawerContent}>
+        drawerPosition={'right'}
+        onDrawerClose={() => setIsDrawerOpen(false)}
+        onDrawerOpen={() => setIsDrawerOpen(true)}
+        renderNavigationView={() => <PerfilDrawer closeDrawer={closeDrawer} />}>
         <View style={styles.container}>
           <View style={styles.header}>
             <View style={styles.headerContent}>
@@ -356,7 +166,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#FFFFFF',
     fontWeight: '600',
-    uperCase: true,
+  
   },
   userInfo: {
     fontSize: 16,

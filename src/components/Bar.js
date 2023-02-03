@@ -1,17 +1,16 @@
-import React, {useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useSelector, useDispatch} from 'react-redux';
-import Home from '../pages/Home';
-import Farmacias from '../pages/Farmacias';
+import {Avatar} from '@rneui/base';
+import React,{useContext,useEffect} from 'react';
+import {useDispatch,useSelector} from 'react-redux';
 import Emergencias from '../pages/Emergencias';
+import Farmacias from '../pages/Farmacias';
+import Home from '../pages/Home';
 import Perfil from '../pages/Perfil';
-import {auth, signOut} from '../components/firebaseConfig';
-import {logout, selectUser} from '../redux/reducer';
-import Details from '../pages/Details';
-import {getEmergencias, getFarmacias, getPublicity} from '../redux/action';
+
+import {getEmergencias,getFarmacias,getPublicity} from '../redux/action';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import AuthContext from './context/AutContext';
 
 
 const Tab = createBottomTabNavigator();
@@ -22,6 +21,7 @@ const TabNavigator = () => {
   const data = useSelector(state => state.farmacias);
   const dataEmer = useSelector(state => state.emergencias);
   const dataPubli = useSelector(state => state.publicidad);
+  const {user} = useContext(AuthContext)
 
   const dispatch = useDispatch();
 
@@ -37,32 +37,19 @@ const TabNavigator = () => {
     }
   }, []);
 
-  const logoutOfApp = () => {
-    // dispatch to the store with the logout action
-    dispatch(logout());
-    // sign out function from firebase
-
-    signOut(auth)
-      .then(() => {
-        alert('Logged out successfully!');
-        // Sign-out successful.
-      })
-      .catch(error => {
-        // An error happened.
-        alert(error);
-      });
-  };
-  const Stack = createNativeStackNavigator();
-
   return (
     <>
       <Tab.Navigator
         screenOptions={({route}) => ({
           inactiveTintColor: 'gray',
           activeTintColor: 'black',
+          tabBarShowLabel: false,
+          tabBarHideOnKeyboard: true,
+         
 
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
+            
 
             if (route.name === 'Home') {
               iconName = focused ? 'home' : 'home-outline';
@@ -71,30 +58,21 @@ const TabNavigator = () => {
             } else if (route.name === 'Emergencias') {
               iconName = focused ? 'call' : 'call-outline';
             } else if (route.name === 'Perfil') {
-              iconName = focused ? 'person' : 'person-outline';
+               return<Avatar rounded
+               source={{
+                 uri:
+                   user?.photoURL
+               }} style={{width:30, height:30}} />
             }
 
             // You can return any component that you like here!
-            return <Icon name={iconName} size={20} color={color} />;
+            return <Icon name={iconName} size={22} color={color} />;
           },
         })}>
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Farmacias" component={Farmacias} />
         <Tab.Screen name="Emergencias" component={Emergencias} />
-        <Tab.Screen
-          name="Perfil"
-          component={Perfil}
-          options={{
-            headerRight: () => (
-              <Icon
-                reverse
-                name="ios-american-football"
-                type="ionicon"
-                color="#517fa4"
-              />
-            ),
-          }}
-        />
+        <Tab.Screen name="Perfil" component={Perfil}  />
       </Tab.Navigator>
     </>
   );

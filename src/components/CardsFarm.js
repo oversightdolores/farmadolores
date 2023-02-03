@@ -1,6 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Image,Pressable,StyleSheet,Text,View} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import FlashingText from './FlashingText';
 import {Horarios} from './Horarios';
 
 
@@ -13,9 +15,10 @@ export default function CardsFarm({
   detail,
   horario,
   id,
+  turno
 }) {
   const navigation = useNavigation();
-
+useEffect(() => {},[Horarios])
 
   const onPress = e => {
 
@@ -30,10 +33,11 @@ export default function CardsFarm({
       gps: gps,
     });
   };
+  
 
  
   return (
-    <View style={styles.card} key={id}>
+    <LinearGradient  colors={['rgba(255,255,255,0.5)','rgba(255,255,255,0.5)']} style={styles.card} key={id}>
       <View style={styles.cardHeader}>
         <View style={styles.cardHeaderLeft}>
           <Image style={styles.avatar} source={{uri: image}} />
@@ -43,7 +47,11 @@ export default function CardsFarm({
           </View>
         </View>
           <View style={styles.cardHeaderRight}>
+            {
+              turno ? <FlashingText />
+              :
             <Horarios horarios={horario} />
+            }
           </View>
       </View>
       <View style={styles.cardBody}>
@@ -61,16 +69,19 @@ export default function CardsFarm({
         </View>
       </View>
 
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius:10,
     margin: 10,
-    shadowColor: '#000',
+    shadowColor: 'rgba(255, 255, 255, 0.2)',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -138,6 +149,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   button: {
+    justifyContent: 'center',
     backgroundColor: '#000',
     padding: 10,
     borderRadius: 10,

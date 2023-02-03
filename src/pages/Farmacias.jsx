@@ -1,7 +1,8 @@
 import React from 'react';
 //import { getAllData, load, loading} from '../redux/action'
 
-import {FlatList,View} from 'react-native';
+import {FlatList,View, StyleSheet} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 import CardsFarm from '../components/CardsFarm';
 import {selectFarmacias} from '../redux/reducer';
@@ -10,7 +11,10 @@ const Farmacias = () => {
   const data = useSelector(selectFarmacias);
   
   return (
-    <View style={{flex: 1}}>
+    <LinearGradient
+    colors={['#009387', '#2bac83ff', '#fff']}
+      style={styles.linearGradient}
+      >
       <FlatList
         data={data}
         renderItem={({item}) => (
@@ -27,7 +31,14 @@ const Farmacias = () => {
         )}
         keyExtractor={item => item.name}
       />
-    </View>
+    </LinearGradient>
   );
 };
 export default Farmacias;
+const styles = StyleSheet.create({
+  
+  linearGradient: {
+    flex: 1,
+    
+  }
+})

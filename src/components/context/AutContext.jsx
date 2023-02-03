@@ -1,50 +1,61 @@
-import { firebase, googleAuthProvider } from '@react-native-firebase/auth';
+import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import {useState, useEffect, createContext} from 'react'
+import { useState, useEffect, createContext } from 'react';
 
 import {
-    GoogleSignin,
-    statusCodes,
-  } from '@react-native-google-signin/google-signin';
-import {Alert} from 'react-native';
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import { Alert } from 'react-native';
+
 
 
 const AuthContext = createContext({
-  isLoggedIn: 'false',
-  user: null,
-  login: () => {},
-  logout: () => {},
-  register: () => {},
-  loginWithGoogle: () => {},
-  updateName: () => {},
-  updateProfileImage: () => {},
-  resetPassword: () => {}
+  isLoggedIn: false,
+  user: {},
+  login: async () => { },
+  logout: async () => { },
+  register: async () => { },
+  loginWithGoogle: async () => { },
+  updateInfo: async () => { },
+  updateProfileImage: async () => { },
+  resetPassword: async () => { }
 });
+
 
 
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        setIsLoading(true)
-        const userRef = firestore().collection('users').doc(user.uid);
-        userRef.get().then(snapshot => {
-          const data = snapshot.data();
-          setUser(data);
-        });
-        
+        setIsLoading(true);
+        firestore()
+        .collection('users')
+        .doc(user.uid)
+        .onSnapshot((snapshot) =>  {
+            const data = snapshot?.data();
+            setUser(data);
+            setIsLoggedIn(true)
+            setIsLoading(false);
+
+          })
+          
       } else {
         setUser(null);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     });
+    return () => unsubscribe();
   }, []);
+
+
 
 
   const resetPassword = async (email) => {
@@ -62,7 +73,7 @@ export const AuthProvider = ({ children }) => {
   }
 
 
-   const register = async (email, password, displayName, apellido) => {
+  const register = async (email, password, displayName, apellido) => {
 
     try {
       const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -72,7 +83,7 @@ export const AuthProvider = ({ children }) => {
         displayName: displayName,
         email: email,
         apellido: apellido,
-        photoURL:'',
+        photoURL: '',
         dir: '',
         phoneNumber: '0000000'
       });
@@ -81,8 +92,8 @@ export const AuthProvider = ({ children }) => {
       console.log(error);
     }
   };
-  
-   const login = async (email, password) => {
+
+  const login = async (email, password) => {
     try {
       const response = await firebase.auth().signInWithEmailAndPassword(email, password);
       return setUser(response.user);
@@ -90,7 +101,7 @@ export const AuthProvider = ({ children }) => {
       if (error.code === 'auth/email-already-in-use') {
         Alert.alert('Este email ya esta en uso!');
       }
-  
+
       if (error.code === 'auth/invalid-email') {
         Alert.alert('El email ingresado es invalido!');
       }
@@ -98,112 +109,110 @@ export const AuthProvider = ({ children }) => {
       if (error.code === 'auth/user-not-found') {
         Alert.alert('El email ingresado no esta registrado!');
       }
-  
+
       console.error(error.code);
     }
   };
-  
-   const loginWithGoogle = async () => {
-      await GoogleSignin.signOut()
-  
+
+  const loginWithGoogle = async () => {
+    await GoogleSignin.signOut()
+
     try {
-        const { idToken } = await GoogleSignin.signIn();
-        const googleCredential = firebase.auth.GoogleAuthProvider.credential(idToken);
+      const { idToken } = await GoogleSignin.signIn();
+      const googleCredential = firebase.auth.GoogleAuthProvider.credential(idToken);
       const { user } = await firebase.auth().signInWithCredential(googleCredential);
       const userRef = firestore().collection('users').doc(user.uid);
+      setIsLoading(true)
       const snapshot = await userRef.get();
       if (!snapshot.exists) {
         await userRef.set({
           uid: user?.uid || '',
           email: user?.email,
           displayName: user?.displayName || '',
-          apellido: user?.apellido || '',
+          apellido: '',
           phoneNumber: user?.phoneNumber || '',
-
-          dir: user?.dir || '',
+          dir: '',
           photoURL: user?.photoURL || ''
         });
       }
       return setUser(snapshot);
 
-  } catch (error) {
-      console.log(error);
-  }
-  };
-  
-   const logout = async () => {
-      try {
-          await firebase.auth().signOut()
-          setUser(null)
     } catch (error) {
       console.log(error);
     }
   };
-  
 
-   const updateProfileImage = async (uid, uri) => {
-      try {
-        const response = await fetch(uri);
-        const blob = await response.blob();
-        const ref = storage().ref(`users/${user.uid}/image`);
-        const snapshot = await ref.put(blob);
-        const url = await snapshot.ref.getDownloadURL();
-        await firestore()
-          .collection('users')
-          .doc(user.uid)
-          .update({ profileImage: url });
-         
+  const logout = async () => {
+    try {
+      await firebase.auth().signOut()
+      setUser(null)
+      setIsLoggedIn(false)
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  
-  
-    const updateInfo = async (userId, userInfo) => {
-      const {displayName, apellido, phoneNumber, dir} = userInfo
 
-      try {
+  const updateProfileImage = async (uid, uri) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const ref = storage().ref(`users/${user.uid}/image`);
+      const snapshot = await ref.put(blob);
+      const url = await snapshot.ref.getDownloadURL();
       await firestore()
-          .collection('users')
-          .doc(userId)
-          .update({ 
-              uid: userId,
-              displayName: displayName,
-              email: user?.email,
-              apellido: apellido,
-              phoneNumber: phoneNumber,
+        .collection('users')
+        .doc(user.uid)
+        .update({ profileImage: url });
 
-              dir:dir
-           });
-           
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  
-  
 
-  
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-return (
-<AuthContext.Provider
-value={{
-user,
-isLoading,
-updateInfo,
-updateProfileImage,
-loginWithGoogle,
-login,
-register,
-logout,
-resetPassword,
 
-}}
->
-{children}
-</AuthContext.Provider>
-);
+  const updateInfo = async (userId, userInfo) => {
+    try {
+      await firestore()
+        .collection('users')
+        .doc(userId)
+        .update({
+          uid: userId,
+          displayName: userInfo.displayName,
+          email: user?.email,
+          apellido: userInfo.apellido,
+          phoneNumber: userInfo.phoneNumber,
+          dir: userInfo.dir
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        isLoggedIn,
+        updateInfo,
+        updateProfileImage,
+        loginWithGoogle,
+        login,
+        register,
+        logout,
+        resetPassword,
+
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContext;

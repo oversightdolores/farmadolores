@@ -20,7 +20,9 @@ function EditarPerfil({route}) {
     displayName: user.displayName,
     apellido: user.apellido,
     phoneNumber: user.phoneNumber,
-    dir: user.dir
+    dir: user.dir,
+    photoURL: user.photoURL,
+
   });
   
   console.log('userInfo', userInfo)

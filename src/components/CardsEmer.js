@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import React,{useEffect,useState} from 'react';
 import {Image,Pressable,StyleSheet,Text,View} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 import {selectFarmacias} from '../redux/reducer';
 
@@ -87,7 +88,7 @@ export default function CardsEmer({
   const cool = hs();
 
   return (
-    <View style={styles.card} key={id}>
+    <LinearGradient  colors={['rgba(255,255,255,0.5)','rgba(255,255,255,0.5)']} style={styles.card} key={id}>
       <View style={styles.cardHeader}>
         <View style={styles.cardHeaderLeft}>
           <Image style={styles.avatar} source={{uri: image}} />
@@ -112,16 +113,20 @@ export default function CardsEmer({
         </View>
       </View>
 
-    </View>
+  
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius:10,
     margin: 10,
-    shadowColor: '#000',
+    shadowColor: 'rgba(255, 255, 255, 0.2)',
     shadowOffset: {
       width: 0,
       height: 2,

@@ -1,8 +1,10 @@
 import {useNavigation} from "@react-navigation/native";
 import React,{useEffect,useState} from "react";
-import {Image,Linking,Pressable,ScrollView,StyleSheet,Text,View} from "react-native";
+import {Image,Linking,ScrollView,StyleSheet,Text,TouchableOpacity,View} from "react-native";
 import Geolocation from 'react-native-geolocation-service';
 import MapView,{Marker,PROVIDER_GOOGLE} from "react-native-maps";
+import Banner from "../components/Banner";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 const Details = ( { route } ) => {
   const {name, avatar, banner, gps, horario, dir, tel } = route.params;
@@ -27,7 +29,6 @@ const Details = ( { route } ) => {
     Geolocation.getCurrentPosition(
       (position) => {
         setPosition(position);
-        console.log(position);
       },
       (error) => {
         // See error code charts below.
@@ -36,16 +37,6 @@ const Details = ( { route } ) => {
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     );
   }
-
-
-
-
-  
-
-
-
-  
-
 
 
   
@@ -57,15 +48,14 @@ const Details = ( { route } ) => {
   };
   const coordinat = { latitude: latitude, longitude: longitude }; 
   
-  console.log('Destination:', coordinat);
 
   const onPhonePress = (item) => {
-    console.log('Llamar', item);
     Linking.openURL(`tel:${item}`);
   }
 
 
   return (
+    <>
     <ScrollView style={styles.container}>
     <View style={styles.container}>
       <View style={styles.header}>
@@ -82,22 +72,20 @@ const Details = ( { route } ) => {
         <View style={styles.bodyContent}>
         <Text style={styles.info}><Text style={{ fontWeight:'bold' }} >Direccion:</Text> {dir}  </Text>
        <View style={styles.tel}>
-          <Pressable style={{ flexDirection: 'row' }} onPress={() => { onPhonePress(tel[0]) }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center',  }} >
           <Text style={styles.info}><Text style={{ fontWeight:'bold' }} >Telefono:</Text> {tel[0]}  </Text>
-            <Image
-              source={require('../assets/telefono.png')}
-              style={styles.llamar}
-            />
-          </Pressable>
+          <TouchableOpacity onPress={() => { onPhonePress(tel[0]) }}>
+             <Icon name='phone' size={20} color={'green'} style={{backgroundColor: '#DCDCDC', padding: 5, borderRadius: 100}}   />
+          </TouchableOpacity>
+          </View>
           {
             tel[1] ?
-            <Pressable style={{ flexDirection: 'row' }} onPress={() => { onPhonePress(tel[1]) }}>
+            <View style={{ flexDirection: 'row' }} >
             <Text style={styles.info}><Text style={{ fontWeight:'bold' }} >Telefono:</Text> {tel[1]}  </Text>
-              <Image
-                source={require('../assets/telefono.png')}
-                style={styles.llamar}
-              />
-            </Pressable>
+            <TouchableOpacity onPress={() => { onPhonePress(tel[1]) }}>
+             <Icon name='phone' size={20} color={'green'} style={{backgroundColor: '#DCDCDC', padding: 5, borderRadius: 100}}   />
+          </TouchableOpacity>
+            </View>
             : null
           }
         </View>
@@ -143,6 +131,8 @@ const Details = ( { route } ) => {
       </View>
     </View>
     </ScrollView>
+    <Banner />
+    </>
   );
 };
 

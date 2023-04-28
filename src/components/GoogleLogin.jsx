@@ -9,11 +9,11 @@ import { selectUser } from '../redux/reducer';
 import authContext from './context/AutContext';
 
 GoogleSignin.configure({
-  scopes: ['https://www.googleapis.com/auth/userinfo.profile'],
+  
+  scopes: [ "https://www.googleapis.com/auth/userinfo.profile"],
   webClientId:
-    '320257863836-7mq4mav5bst0iuraeahu2lpoinjrtc02.apps.googleusercontent.com',
-  androidClientId:[
-    '320257863836-qsqd0qh6sghoiso15p5oenq2067ckg4q.apps.googleusercontent.com', '320257863836-ufdrcrgar74i7vpv47fo34luafi2jvba.apps.googleusercontent.com'],
+    '320257863836-7mq4mav5bst0iuraeahu2lpoinjrtc02.apps.googleusercontent.com', 
+  androidClientId:['320257863836-qsqd0qh6sghoiso15p5oenq2067ckg4q.apps.googleusercontent.com'],
   offlineAccess: true,
   accountName: '',
   forceCodeForRefreshToken: true,

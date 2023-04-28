@@ -6,7 +6,6 @@ import {Image,StyleSheet,View} from 'react-native';
 
 const Splash = () => {
   
-    console.log('este es el splash')
 
   return (
     <View style={styles.container}>

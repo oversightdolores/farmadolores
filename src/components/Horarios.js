@@ -1,14 +1,45 @@
+import {useEffect} from "react";
 import {Text,View} from "react-native";
 
 
-export const Horarios = ({horarios}) => {
+export const Horarios = ({ horarios }) => {
+
+  useEffect(() => {
+  
+  }, [horarios])
+
+  const currentDate = new Date();
+  const currentHour = currentDate.getHours();
+  const currentMinutes = currentDate.getMinutes();
+
+  const openingMorning = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), horarios[0].split(':')[0], horarios[0].split(':')[1]);
+  const closingMorning = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), horarios[1].split(':')[0], horarios[1].split(':')[1]);
+  const openingAfternoon = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), horarios[2].split(':')[0], horarios[2].split(':')[1]);
+  const closingAfternoon = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), horarios[3].split(':')[0], horarios[3].split(':')[1]);
+
+  if (currentDate >= openingMorning && currentDate < closingMorning) {
+    return <View style={{backgroundColor: '#2bac83ff', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
+      <Text style={{fontWeight:'bold', color:'#fff', padding: 2, fontSize:10}}>Abierto</Text></View>;
+  } else if (currentDate >= closingMorning && currentDate < openingAfternoon) {
+    return <View style={{backgroundColor: '	#df6529', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
+      <Text style={{fontWeight:'bold', color:'#fff', padding: 2, fontSize:10}}>Cierra pronto</Text></View>;;
+  } else if (currentDate >= openingAfternoon && currentDate < closingAfternoon) {
+    return <View style={{backgroundColor: '#2bac83ff', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
+      <Text style={{fontWeight:'bold', color:'#fff', padding: 2, fontSize:10}}>Abierto</Text></View>;
+  } else {
+    return <View style={{backgroundColor: 'tomato', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
+      <Text style={{fontWeight:'bold', color:'#fff', padding: 2, fontSize:10}}>Cerrado</Text></View>;
+  }
+};
+
+/* export const Horarios = ({horarios}) => {
   const currentTime = new Date();
   let currentHour = currentTime.getHours();
   let currentMinutes = currentTime.getMinutes();
   const currentDate = currentTime.getDate();
   const currentMonth = currentTime.getMonth();
   const currentYear = currentTime.getFullYear();
-  
+  console.log('currentDate',currentDate)
   //open time
   let openHour = horarios[0].split(" ")[0].split(":")[0];
   let openMinutes = horarios[0].split(" ")[0].split(":")[1];
@@ -51,4 +82,4 @@ export const Horarios = ({horarios}) => {
     return <View style={{backgroundColor: 'tomato', justifyContent:'center', alignItems:'center', borderRadius: 8, width:100}} >
       <Text style={{fontWeight:'bold', color:'#fff', padding: 2, fontSize:10}}>Cerrado</Text></View>;
     }
-    }
+    } */

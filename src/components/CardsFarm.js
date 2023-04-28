@@ -35,7 +35,9 @@ useEffect(() => {},[Horarios])
   };
   
 
+ useEffect(() => {
  
+ }, [Horarios])
   return (
     <LinearGradient  colors={['rgba(255,255,255,0.5)','rgba(255,255,255,0.5)']} style={styles.card} key={id}>
       <View style={styles.cardHeader}>

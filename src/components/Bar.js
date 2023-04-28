@@ -10,6 +10,7 @@ import Perfil from '../pages/Perfil';
 import {getEmergencias,getFarmacias,getPublicity} from '../redux/action';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import User from 'react-native-vector-icons/FontAwesome';
 import AuthContext from './context/AutContext';
 
 
@@ -45,8 +46,7 @@ const TabNavigator = () => {
           activeTintColor: 'black',
           tabBarShowLabel: false,
           tabBarHideOnKeyboard: true,
-         
-
+        
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
             
@@ -58,11 +58,16 @@ const TabNavigator = () => {
             } else if (route.name === 'Emergencias') {
               iconName = focused ? 'call' : 'call-outline';
             } else if (route.name === 'Perfil') {
-               return<Avatar rounded
-               source={{
-                 uri:
-                   user?.photoURL
-               }} style={{width:30, height:30}} />
+           return user ?
+           <Avatar rounded
+
+           source={{
+             uri:
+               user?.photoURL
+           }} style={{width:30, height:30}} />
+           : 
+            <User name={'user-circle'} size={22} color={'gray'} />;
+
             }
 
             // You can return any component that you like here!
@@ -70,8 +75,8 @@ const TabNavigator = () => {
           },
         })}>
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Farmacias" component={Farmacias} />
-        <Tab.Screen name="Emergencias" component={Emergencias} />
+        <Tab.Screen name="Farmacias" options={{headerShown: false}} component={Farmacias} />
+        <Tab.Screen name="Emergencias" options={{headerShown: false}} component={Emergencias} />
         <Tab.Screen name="Perfil" component={Perfil}  />
       </Tab.Navigator>
     </>

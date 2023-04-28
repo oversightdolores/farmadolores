@@ -33,27 +33,30 @@ export const AuthProvider = ({ children }) => {
 
   
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setIsLoading(true);
-        firestore()
-        .collection('users')
-        .doc(user.uid)
-        .onSnapshot((snapshot) =>  {
-            const data = snapshot?.data();
-            setUser(data);
-            setIsLoggedIn(true)
-            setIsLoading(false);
-
-          })
-          
-      } else {
-        setUser(null);
+  const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+    if (user) {
+      setIsLoading(true);
+      try {
+        const snapshot = await firestore()
+          .collection('users')
+          .doc(user.uid)
+          .get();
+        const data = snapshot.data();
+        setUser(data);
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.log(error);
+      } finally {
         setIsLoading(false);
       }
-    });
-    return () => unsubscribe();
-  }, []);
+    } else {
+      setUser(null);
+      setIsLoading(false);
+    }
+  });
+  return () => unsubscribe();
+}, []);
+
 
 
 

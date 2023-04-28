@@ -23,7 +23,6 @@ const Stack = createNativeStackNavigator();
 export default function Nav() {
  const {isLoading, isLoggedIn} = useContext(authContext)
 
-console.log(isLoading)
 
 
 return (

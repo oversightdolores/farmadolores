@@ -12,6 +12,8 @@ import SplashScreen from 'react-native-splash-screen'
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native'
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+import PushNotification, { Importance } from 'react-native-push-notification';
+
 
 const colorBtns = {
   active: '#27bdbb',
@@ -33,6 +35,8 @@ const colorBtns = {
 
 
 export default function App() {
+
+  
   const { theme } = useContext(ThemeContext)
   const [isLoad, setIsLoad] = useState(true);
   useEffect(() => {
@@ -40,6 +44,7 @@ export default function App() {
     
   }, []);
 
+  
 
   return (
     <SafeAreaProvider>

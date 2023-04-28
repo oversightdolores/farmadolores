@@ -8,14 +8,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:320257863836:android:d0477ff50a170d3f073d59",
+        "mobilesdk_app_id": "1:320257863836:android:2c50cf23dd1b56d8073d59",
         "android_client_info": {
           "package_name": "com.overcode.farmadolores"
         }
       },
       "oauth_client": [
         {
-          "client_id": "320257863836-qsqd0qh6sghoiso15p5oenq2067ckg4q.apps.googleusercontent.com",
+          "client_id": "320257863836-ufdrcrgar74i7vpv47fo34luafi2jvba.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.overcode.farmadolores",
@@ -29,7 +29,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA9JvTARfT2vGaG6VyV6zZEzDeYJGjuoDw"
+          "current_key": "AIzaSyAcdB394WCGayuAepIXgz-GeEGf8_EayO4"
         }
       ],
       "services": {

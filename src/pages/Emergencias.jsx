@@ -7,6 +7,7 @@ import {useSelector} from 'react-redux';
 import CardsEmer from '../components/CardsEmer';
 import {selectEmergencias} from '../redux/reducer';
 import LinearGradient from 'react-native-linear-gradient';
+import Banner from '../components/Banner';
 
 const Emergencias = () => {
   const data = useSelector(selectEmergencias);
@@ -17,6 +18,7 @@ const Emergencias = () => {
       <LinearGradient
     colors={['#009387', '#2bac83ff', '#fff']}
     style={styles.linearGradient}>
+      <Banner />
       <FlatList
         data={data}
         renderItem={({item}) => (

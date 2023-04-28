@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 import CardsFarm from '../components/CardsFarm';
 import {selectFarmacias} from '../redux/reducer';
+import Banner from '../components/Banner';
 
 const Farmacias = () => {
   const data = useSelector(selectFarmacias);
@@ -15,6 +16,7 @@ const Farmacias = () => {
     colors={['#009387', '#2bac83ff', '#fff']}
       style={styles.linearGradient}
       >
+        <Banner />
       <FlatList
         data={data}
         renderItem={({item}) => (

@@ -12,7 +12,6 @@ import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
 function EditarPerfil({route}) {
   //const { user } = useContext(authContext);
   //const {displayName,apellido,tel, dir, photoURL,uid} = route.params
-  console.log('este es el usuario de edit context', route.params)
  
   const {user, updateInfo, updateProfileImage} = useContext(AuthContext)
   const [image, setImage] = useState(user?.photoURL);
@@ -25,14 +24,12 @@ function EditarPerfil({route}) {
 
   });
   
-  console.log('userInfo', userInfo)
   useEffect(()=>{setImage(user.photoURL)},[user,image])
 
   const handleSaveChanges = async () => {
     try {
       await updateInfo(user.uid, userInfo);
        updateProfileImage(user.uid, image);
-      console.log('cambios enviados ')
       setUserInfo({
         displayName: '',
         apellido: '',

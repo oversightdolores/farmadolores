@@ -1,8 +1,11 @@
-import { View, Image, ScrollView, Button, Text, StyleSheet, Dimensions, Pressable, Linking } from "react-native";
+import { View, Image, ScrollView, Button, Text, StyleSheet, Dimensions, TouchableOpacity, Linking } from "react-native";
 import React, { useState, useEffect } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
 import Geolocation from 'react-native-geolocation-service';
 import {useNavigation} from '@react-navigation/native';
+import Banner from "../components/Banner";
+import Icon from "react-native-vector-icons/FontAwesome5";
+
 
 
 const DetailEmer = ( { route } ) => {
@@ -23,7 +26,6 @@ const DetailEmer = ( { route } ) => {
     Geolocation.getCurrentPosition(
       (position) => {
         setPosition(position);
-        console.log(position);
       },
       (error) => {
         // See error code charts below.
@@ -59,11 +61,11 @@ const DetailEmer = ( { route } ) => {
 
 
   const onPhonePress = (item) => {
-    console.log('Llamar', item);
     Linking.openURL(`tel:${item}`);
   }
 
   return (
+    <>
     <ScrollView style={styles.container}>
     <View style={styles.container}>
       <View style={styles.header}>
@@ -80,22 +82,20 @@ const DetailEmer = ( { route } ) => {
         <View style={styles.bodyContent}>
         <Text style={styles.info}><Text style={{ fontWeight:'bold' }} >Direccion:</Text> {dir}  </Text>
         <View style={styles.tel}>
-          <Pressable style={{ flexDirection: 'row' }} onPress={() => { onPhonePress(tel[0]) }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center',  }} >
           <Text style={styles.info}><Text style={{ fontWeight:'bold' }} >Telefono:</Text> {tel[0]}  </Text>
-            <Image
-              source={require('../assets/telefono.png')}
-              style={styles.llamar}
-            />
-          </Pressable>
+          <TouchableOpacity onPress={() => { onPhonePress(tel[0]) }}>
+             <Icon name='phone' size={20} color={'green'} style={{backgroundColor: '#DCDCDC', padding: 5, borderRadius: 100}}   />
+          </TouchableOpacity>
+          </View>
           {
             tel[1] ?
-            <Pressable style={{ flexDirection: 'row' }} onPress={() => { onPhonePress(tel[1]) }}>
-            <Text style={styles.info}><Text style={{ fontWeight:'bold' }} >Telefono:</Text> {tel[1]}  </Text>
-              <Image
-                source={require('../assets/telefono.png')}
-                style={styles.llamar}
-              />
-            </Pressable>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center',  }} >
+          <Text style={styles.info}><Text style={{ fontWeight:'bold' }} >Telefono:</Text> {tel[1]}  </Text>
+          <TouchableOpacity onPress={() => { onPhonePress(tel[1]) }}>
+             <Icon name='phone' size={20} color={'green'} style={{backgroundColor: '#DCDCDC', padding: 5, borderRadius: 100}}   />
+          </TouchableOpacity>
+          </View>
             : null
           }
         </View>
@@ -141,6 +141,8 @@ const DetailEmer = ( { route } ) => {
       </View>
     </View>
     </ScrollView>
+    <Banner />
+    </>
   );
 };
 

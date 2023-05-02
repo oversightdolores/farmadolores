@@ -9,6 +9,7 @@ import {
   Alert,
   Pressable,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import AuthContext from '../components/context/AutContext';
@@ -23,12 +24,58 @@ export default function Register() {
   const [apellido, setApellido] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState('');
+  const [errors, setErrors] = useState({
+    name: false,
+    apellido: false,
+    email: false,
+    password: false,
+  });
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+
+  
+  const validate = () => {
+    let emailError = false;
+    let passwordError = false;
+    let nameError = false;
+    let apellidoError = false;
+  
+    if (!email) {
+      emailError = true;
+    }
+    
+    if (!password) {
+      passwordError = true;
+    }
+
+    if (!apellido) {
+      apellidoError = true;
+    }
+
+    if (!displayName) {
+      nameError = true;
+    }
+    
+    setErrors({
+      email: emailError,
+      password: passwordError,
+      apellido: apellidoError,
+      name: nameError
+    });
+    
+    return !emailError && !passwordError && apellidoError && nameError;
+  };
+  
+
+  const handleRegister = () => {
+    if(validate()) {
+      register(email, password, displayName, apellido)
+    }
+  }
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Image
           source={require('../assets/logo.png')}
@@ -41,6 +88,7 @@ export default function Register() {
           <TextInput
             mode="outlined"
             label="Nombre"
+            error={errors.name}
             style={styles.textInput}
             autoCapitalize="none"
             onChangeText={displayName => setDisplayName(displayName)}
@@ -50,6 +98,7 @@ export default function Register() {
           <TextInput
             mode="outlined"
             label="Apellido"
+            error={errors.apellido}
             style={styles.textInput}
             autoCapitalize="none"
             onChangeText={apellido => setApellido(apellido)}
@@ -59,6 +108,7 @@ export default function Register() {
           <TextInput
             mode="outlined"
             label="Correo"
+            error={errors.email}
             style={styles.textInput}
             autoCapitalize="none"
             onChangeText={email => setEmail(email)}
@@ -68,6 +118,7 @@ export default function Register() {
           <TextInput
             mode="outlined"
             label="Contraseña"
+            error={errors.password}
             secureTextEntry={true}
             style={styles.textInput}
             autoCapitalize="none"
@@ -78,7 +129,7 @@ export default function Register() {
           <Pressable
             style={styles.btnI}
             
-            onPress={()=>register(email, password, displayName, apellido)}
+            onPress={()=> handleRegister() }
           >
             <Text style={{fontWeight: 'bold', color:'#009387'}}>Registrarse</Text>
             </Pressable>
@@ -93,7 +144,7 @@ export default function Register() {
           </Pressable>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -112,6 +163,7 @@ export default function Register() {
       flex: 2,
       backgroundColor: '#fff',
       borderTopLeftRadius: 30,
+      height: '100%',      
       borderTopRightRadius: 30,
       paddingVertical: 70,
       paddingHorizontal: 30,
@@ -148,7 +200,7 @@ export default function Register() {
     },
     action: {
       flexDirection: 'row',
-      marginTop: 10,
+      marginTop: 5,
       
       borderBottomWidth: 1,
       borderBottomColor: '#f2f2f2',
@@ -156,8 +208,8 @@ export default function Register() {
     },
     textInput: {
       flex: 1,
-      marginTop: Platform.OS === 'ios' ? 0 : -12,
-
+      marginTop: Platform.OS === 'ios' ? 0 : -10,
+      height:40,
       paddingLeft: 10,
       color: '#05375a',
     },

@@ -3,7 +3,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React,{useContext,useEffect,useState} from 'react';
 import {
-  Button,Image,Pressable,SafeAreaView,StyleSheet,Text,View
+  Button,Image,Pressable,SafeAreaView,ScrollView,StyleSheet,Text,View
 } from 'react-native';
 import {Modal,TextInput, HelperText} from 'react-native-paper';
 import {useDispatch,useSelector} from 'react-redux';
@@ -67,7 +67,7 @@ export default function Login() {
 
   return (
     <>
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.container_header}>
         <Image style={styles.logo} source={require('../assets/logo.png')} />
       </View>
@@ -134,7 +134,7 @@ export default function Login() {
         </View>
         
         
-    </SafeAreaView>
+    </ScrollView>
        
 
       <Modal style={styles.containerM} visible={visible} onDismiss={hideModal}>
@@ -159,6 +159,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
     backgroundColor: '#009387',
   },
   container_header: {
@@ -208,10 +209,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   action: {
-    marginTop: 20,
+    marginTop: 10,
   },
   textInput: {
     fontSize: 16,
+    height:40
   },
   container_footer: {
     alignItems: 'center',

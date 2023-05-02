@@ -4,7 +4,8 @@ import React,{useContext} from 'react';
 import {
   Button,Pressable,
   StyleSheet,Text,
-  View
+  View,
+  ScrollView
 } from 'react-native';
 import {
   Avatar,Title,TouchableRipple
@@ -39,7 +40,7 @@ const PerfilDrawer = () => {
     
 
 return(
-    <View style={styles.drawerContent}>
+    <ScrollView style={styles.drawerContent}>
       <View style={styles.userInfoSection}>
         <View style={{flexDirection: 'row', marginTop: 15}}>
           <Avatar.Image
@@ -196,7 +197,7 @@ return(
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

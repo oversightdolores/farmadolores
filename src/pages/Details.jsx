@@ -8,7 +8,8 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 const Details = ( { route } ) => {
   const {name, avatar, banner, gps, horario, dir, tel } = route.params;
- 
+const banner4 = 'ca-app-pub-1460570234418559/8346284564';
+  
   const navigation = useNavigation();
 
   const latitude = gps.latitude;
@@ -131,7 +132,7 @@ const Details = ( { route } ) => {
       </View>
     </View>
     </ScrollView>
-    <Banner />
+    <Banner banner={banner4} />
     </>
   );
 };

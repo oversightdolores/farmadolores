@@ -3,17 +3,18 @@ import { View, Text } from 'react-native'
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 
 
-const Banner = ({banner}) => {
-  console.log(banner)
+const BannerMax = ({banner}) => {
     return (
        
               <BannerAd
       unitId={banner}
-      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-     
+      size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
+      requestOptions={{
+        requestNonPersonalizedAdsOnly: false,
+      }}
     />
         
     )
 }
 
-export default Banner
+export default BannerMax

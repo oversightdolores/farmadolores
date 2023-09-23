@@ -1,20 +1,11 @@
-import rootReducer from "./reducer";
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from './reducer';
+import thunkMiddleware from 'redux-thunk';
 
-import thunkMiddleware from 'redux-thunk'
-
-
-
-export const store = configureStore({
-  reducer : rootReducer,
-  devTools: true,
-  middleware: [thunkMiddleware]
-  
-})
-
-
-
-
-// thunk nos permite trabajar con asincronismo en el front
+const store = configureStore({
+  reducer: rootReducer,
+  devTools: process.env.NODE_ENV !== 'production', // Habilita las DevTools de Redux en desarrollo
+  middleware: [thunkMiddleware],
+});
 
 export default store;

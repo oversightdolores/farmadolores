@@ -4,7 +4,6 @@ import React,{useEffect,useState} from 'react';
 import {Image,Pressable,StyleSheet,Text,View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
-import {selectFarmacias} from '../redux/reducer';
 
 export default function CardsEmer({
   name,
@@ -17,59 +16,6 @@ export default function CardsEmer({
   id,
 }) {
   const navigation = useNavigation();
-
-  const [date, setDate] = useState(moment().format('DD/MM/YYYY'));
-  const data = useSelector(selectFarmacias);
-  const [rating, setRating] = useState(10);
-
-  const [farm, setFarm] = useState([]);
-
-  const [hora, setHora] = useState(moment().format('LT'));
-
-  const load = false;
-  var color = '';
-  const hs = () => {
-    for (let i = 0; i < data.length; i++) {
-      for (let j = 0; j < data[i].horario.length; j++) {
-        if (data[i].horario[j] >= '08:00' && data[i].horario[j] <= '12:00') {
-          return (color = 'green');
-        } else if (
-          data[i].horario[j] >= '12:00' &&
-          data[i].horario[j] <= '12:30'
-        ) {
-          return (color = 'yellow');
-        } else if (
-          data[i].horario[j] >= '12:30' &&
-          data[i].horario[j] <= '16:00'
-        ) {
-          return (color = 'red');
-        } else if (
-          data[i].horario[j] >= '16:00' &&
-          data[i].horario[j] <= '20:00'
-        ) {
-          return (color = 'green');
-        } else if (
-          data[i].horario[j] >= '20:00' &&
-          data[i].horario[j] <= '20:30'
-        ) {
-          return (color = 'yellow');
-        } else if (
-          data[i].horario[j] >= '20:30' &&
-          data[i].horario[j] <= '24:00'
-        ) {
-          return (color = 'red');
-        } else if (
-          data[i].horario[j] >= '00:00' &&
-          data[i].horario[j] <= '08:00'
-        ) {
-          return (color = 'red');
-        }
-      }
-    }
-  };
-  useEffect(() => {
-    hs();
-  }, [hora, rating]);
 
   const onPress = e => {
 
@@ -85,7 +31,7 @@ export default function CardsEmer({
     });
   };
 
-  const cool = hs();
+  // const cool = hs();
 
   return (
     <LinearGradient  colors={['rgba(255,255,255,0.5)','rgba(255,255,255,0.5)']} style={styles.card} key={id}>

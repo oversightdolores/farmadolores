@@ -1,12 +1,12 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useEffect} from 'react';
-import {Image,Pressable,StyleSheet,Text,View} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FlashingText from './FlashingText';
-import {Horarios} from './Horarios';
+import Horarios from './Horarios';
+import { DateTime } from 'luxon';
 
-
-export default function CardsFarm({
+const CardsFarm = ({
   name,
   dir,
   tel,
@@ -15,13 +15,12 @@ export default function CardsFarm({
   detail,
   horario,
   id,
-  turno
-}) {
+  turno,
+}) => {
   const navigation = useNavigation();
-useEffect(() => {},[Horarios])
 
-  const onPress = e => {
 
+  const onPress = () => {
     navigation.navigate('Details', {
       id: id,
       name: name,
@@ -33,36 +32,66 @@ useEffect(() => {},[Horarios])
       gps: gps,
     });
   };
-  
 
- useEffect(() => {
- 
- }, [Horarios])
+    // Función para dividir los horarios en grupos de dos
+    const splitHorarios = (horarios) => {
+      const groupedHorarios = [];
+      for (let i = 0; i < horarios.length; i += 2) {
+        groupedHorarios.push(horarios.slice(i, i + 2));
+      }
+      return groupedHorarios;
+    };
+
+
   return (
-    <LinearGradient  colors={['rgba(255,255,255,0.5)','rgba(255,255,255,0.5)']} style={styles.card} key={id}>
+    <LinearGradient
+      colors={['rgba(255,255,255,0.5)', 'rgba(255,255,255,0.5)']}
+      style={styles.card}
+      key={id}
+    >
       <View style={styles.cardHeader}>
         <View style={styles.cardHeaderLeft}>
-          <Image style={styles.avatar} source={{uri: image}} />
+          <Image style={styles.avatar} source={{ uri: image }} />
           <View style={styles.cardHeaderLeftText}>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.dir}>{dir}</Text>
           </View>
         </View>
-          <View style={styles.cardHeaderRight}>
-            {
-              turno ? <FlashingText />
-              :
-            <Horarios horarios={horario} />
-            }
-          </View>
+        <View style={styles.cardHeaderRight}>
+          {turno ? <FlashingText /> : horario ? <Horarios horarios={horario} /> : null}
+        </View>
       </View>
       <View style={styles.cardBody}>
-        <Image style={styles.banner} source={{uri: detail}} />
+        <Image style={styles.banner} source={{ uri: detail }} />
       </View>
       <View style={styles.cardFooter}>
-        <View style={styles.cardFooterLeft}>
-          <Text style={styles.horario}>{horario[0]} -A- {horario[1]} </Text>
-          <Text style={styles.horario}>{horario[2]} -A- {horario[3]} </Text>
+      <View style={styles.cardFooterLeft}>
+          {horario && horario.length > 0 ? (
+            splitHorarios(horario).map((horarioGroup, groupIndex) => (
+              <View key={groupIndex} style={styles.horarioGroup}>
+                {horarioGroup.map((timestampData, index) => {
+                  if (timestampData && timestampData.seconds) {
+                    const seconds = timestampData.seconds;
+                    const nanoseconds = timestampData.nanoseconds / 1e6;
+                    const timestamp = DateTime.fromMillis(seconds * 1000 + nanoseconds, { zone: 'utc' })
+                      .setZone('America/Argentina/Buenos_Aires')
+                      .toLocaleString(DateTime.TIME_24_SIMPLE);
+                  
+                    return (
+                      <Text key={index} style={styles.horario}>
+                      {index === 0 ? '' : ' a '}
+                      {timestamp}
+                    </Text>
+                    
+                    );
+                  }
+                  return null;
+                })}
+              </View>
+            ))
+          ) : (
+            <Text style={styles.horario}>Horario no disponible</Text>
+          )}
         </View>
         <View style={styles.cardFooterRight}>
           <Pressable style={styles.button} onPress={onPress}>
@@ -70,10 +99,11 @@ useEffect(() => {},[Horarios])
           </Pressable>
         </View>
       </View>
-
     </LinearGradient>
   );
-}
+};
+
+export default CardsFarm;
 
 const styles = StyleSheet.create({
   card: {
@@ -99,6 +129,10 @@ const styles = StyleSheet.create({
   },
   cardHeaderLeft: {
     flexDirection: 'row',
+  },
+  horarioGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   cardHeaderLeftText: {
     marginLeft: 10,
@@ -173,132 +207,3 @@ const styles = StyleSheet.create({
   },
 });
 
-/* 
-
-
-
-
-    <View style={styles.container}>
-      
-                <View style={styles.item}>
-                  <View style={styles.itemLeft}>
-                  <View style={{width: 61,
-      height: 61,
-      borderColor: cool,
-      borderWidth: 1.5,
-      borderRadius: 100,
-      marginRight: 10,}} >
-                    <Image source={{uri: image} } style={styles.square} />
-                     </View>
-                  </View>
-                  <View style={styles.itemRight}>
-                    <Text style={styles.itemTitle}>{name}</Text>
-                    <Text style={styles.itemText}>{dir}</Text>
-                    <Text style={styles.itemText}>{tel[0]}</Text>
-                  
-                    </View>
-                    <Pressable onPress={() => onPress(name) } style={styles.button} onHoverIn={styles.press } >
-                    <Text style={styles.itemIr} > {'»'} </Text>
-                  </Pressable>
-                </View>
-                    
-    </View>
-  )
-}
-
-
-
-
-
-const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        
-        alignItems: 'center',
-        justifyContent: 'center',
-        },
-
-    
-    itemIr: {
-      
-        color: 'gray',
-        opacity: 0.5,
-        fontSize: 30,
-        
-      
-    },
-    press: {
-      backgroundColor: 'red',
-    },
-
-    
-    button: {
-
-        backgroundColor: 'white',
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        alignItems: 'center',
-        
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 10,
-        },
-        shadowOpacity: 0.53,
-        shadowRadius: 13.97,
-        elevation: 21,
-      },
-    
-
-    item: {
-        
-      backgroundColor: "#fff",
-      padding: 15,
-      borderRadius: 10,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      marginBottom: 20,
-      width: 350,
-        height: 100,
-    },
-    itemLeft: {
-      flexDirection: "row",
-      alignItems: "center",
-      flexWrap: "wrap",
-    },
-    itemRight: {
-      width: 200,
-      flexDirection: "column",
-  
-      
-    },
-    itemTitle: {
-      fontSize: 20,
-      fontWeight: "bold",
-      color: "#000",
-    },
-  
-    square: {
-      width: 60,
-      height: 60,
-      backgroundColor: "#55BCF6",
-      opacity: 100,
-      borderRadius: 100,
-      marginRight: 15,
-    },
-    itemText: {
-      maxWidth: "80%",
-      color: "#000",
-    },
-    circular: {
-      width: 61,
-      height: 61,
-      borderWidth: 2,
-      borderRadius: 100,
-      marginRight: 15,
-    },
-  });
-    */

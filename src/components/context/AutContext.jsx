@@ -29,35 +29,29 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  
   useEffect(() => {
-  const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
-    if (user) {
-      setIsLoading(true);
-      try {
-        const snapshot = await firestore()
-          .collection('users')
-          .doc(user.uid)
-          .get();
-        const data = snapshot.data();
-        setUser(data);
-        setIsLoggedIn(true);
-      } catch (error) {
-        console.log(error);
-      } finally {
+    const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        setIsLoading(true);
+        try {
+          const snapshot = await firestore().collection('users').doc(user.uid).get();
+          const data = snapshot.data();
+          setUser(data);
+          setIsLoggedIn(true);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setUser(null);
         setIsLoading(false);
       }
-    } else {
-      setUser(null);
-      setIsLoading(false);
-    }
-  });
-  return () => unsubscribe();
-}, []);
-
-
+    });
+    return () => unsubscribe();
+  }, []);
 
 
 

@@ -8,8 +8,7 @@ import CarouselCardItem,{ITEM_WIDTH,SLIDER_WIDTH} from "./carouselCardItem";
 const CarouselCards = () => {
   const [index, setIndex] = React.useState(0);
   const isCarousel = React.useRef(true);
-  const data = useSelector(selectPublicidad);
-  
+  const data = useSelector((state) => state.publicidad);
   
   return (
     <View>

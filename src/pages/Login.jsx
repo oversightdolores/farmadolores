@@ -1,266 +1,152 @@
-//construccion de login con firebase y google y react native y redux
-
-import {useNavigation} from '@react-navigation/native';
-import React,{useContext,useEffect,useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useState } from 'react';
 import {
-  Button,Image,Pressable,SafeAreaView,ScrollView,StyleSheet,Text,View
+  Image, ScrollView, StyleSheet, Text, View,
 } from 'react-native';
-import {Modal,TextInput, HelperText} from 'react-native-paper';
-import {useDispatch,useSelector} from 'react-redux';
+import { Button, HelperText, TextInput } from 'react-native-paper';
 import AuthContext from '../components/context/AutContext';
 import GoogleLogin from '../components/GoogleLogin';
-import {selectUser} from '../redux/reducer';
 
 export default function Login() {
-  const {login, resetPassword} = useContext(AuthContext)
-  const errores = () => {
-    return !email.includes('@');
-  };
+  const { login, loading, resetPassword } = useContext(AuthContext);
+  const navigation = useNavigation();
 
+  
   const [email, setEmail] = useState('');
-  const [resetMail, setResetMail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({
     email: false,
-    password: false
+    password: false,
   });
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-
-  const user = useSelector(selectUser);
-  const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = React.useState(false);
-
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-
 
   const validate = () => {
-    let emailError = false;
-    let passwordError = false;
-  
-    if (!email) {
-      emailError = true;
-    }
-    
-    if (!password) {
-      passwordError = true;
-    }
-    
+    const emailError = !email || !email.includes('@');
+    const passwordError = !password;
+
     setErrors({
       email: emailError,
-      password: passwordError
+      password: passwordError,
     });
-    
+
     return !emailError && !passwordError;
   };
-  
 
   const handleLogin = () => {
     if (validate()) {
-      // Realizar la acción de inicio de sesión
-      login(email,password)
+      login(email, password);
     }
   };
-  
-  
+
+  const handleForgotPassword = () => {
+    resetPassword(email);
+  };
 
   return (
-    <>
-    <ScrollView style={styles.container}>
-      <View style={styles.container_header}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.logoContainer}>
         <Image style={styles.logo} source={require('../assets/logo.png')} />
       </View>
-      
-      <View style={styles.container_body}>
-        <View style={styles.header_body}>
-        <Text style={styles.titl}>Bienvenido</Text>
-        <Text style={styles.text}>Inicia sesión con tu cuenta</Text>
-        </View>
-        <View style={styles.center_body}>
-        </View>
-        <View style={styles.action}>
-          <TextInput
-            label="Correo"
-            mode="outlined"
-            error={errors.email}
-            style={styles.textInput}
-            value={email}
-            autoCapitalize="none"
-            onChangeText={text => setEmail(text)}
-          />
-        </View>
-        <View style={styles.action}>
-          <TextInput
-          
-            label="Contraseña"
-            mode="outlined"
-            error={errors.password}
-            secureTextEntry={true}
-            style={styles.textInput}
-            value={password}
-            autoCapitalize="none"
-            onChangeText={text => setPassword(text)}
-            />
-        </View>
-        <View style={styles.text}>
-          <Pressable onPress={showModal}>
-            <Text style={{color: 'black'}}>¿Olvidaste tu contraseña?</Text>
-          </Pressable>
-        </View>
-        
-            </View>
-
-
-        <View style={styles.container_footer}>
-          <Pressable
-            style={styles.btnI}
-            disabled={errors.email || errors.password}
-            onPress={handleLogin}
-          >
-            <Text style={{fontWeight: 'bold', color:'#009387'}}>Inicias sesion</Text>
-            </Pressable>
-            <Text style={styles.span}>----- O -----</Text>
-
+      <View style={styles.formContainer}>
+        <Text style={styles.title}>¡Bienvenido de nuevo!</Text>
+        <Text style={styles.subtitle}>Inicia sesión en tu cuenta</Text>
+        <TextInput
+          label="Correo electrónico"
+          mode="outlined"
+          error={errors.email}
+          style={styles.input}
+          value={email}
+          autoCapitalize="none"
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          label="Contraseña"
+          mode="outlined"
+          error={errors.password}
+          secureTextEntry
+          style={styles.input}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <HelperText type="error" visible={errors.email || errors.password}>
+          Por favor, completa los campos correctamente.
+        </HelperText>
+        <Button
+          mode="contained"
+          style={styles.loginButton}
+          onPress={handleLogin}
+          loading={loading}
+          disabled={loading}
+        >
+          Iniciar sesión
+        </Button>
+        <Text style={styles.forgotPassword} onPress={handleForgotPassword}>
+          ¿Olvidaste tu contraseña?
+        </Text>
+      </View>
+      <View style={styles.footerContainer}>
         <GoogleLogin />
-        
-          <Pressable onPress={() => navigation.navigate('Register')}>
-            <Text style={{color: 'black', top: 20}}>
-              ¿No tienes una cuenta? Registrate
-            </Text>
-          </Pressable>
-
-          <Text style={ styles.textM}>Created By BelaCode</Text>
-        </View>
-        
-        
+        <Text style={styles.registerText} onPress={() => navigation.navigate('Register')}>
+          ¿No tienes una cuenta? Regístrate
+        </Text>
+        <Text style={styles.footerText}>© 2023 BelaCode</Text>
+      </View>
     </ScrollView>
-       
-
-      <Modal style={styles.containerM} visible={visible} onDismiss={hideModal}>
-  <View style={styles.modal}>
-    <Text style={[styles.modalText, styles.titl]}>Restablecer contraseña</Text>
-    <TextInput
-      style={styles.input}
-      label="Email"
-      mode="outlined"
-      value={resetMail}
-      onChangeText={text => setResetMail(text)}
-    />
-    <Button style={styles.submitBtn} title="Enviar" onPress={() => resetPassword(resetMail)} />
-  </View>
-</Modal>
-</>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: '100%',
-    backgroundColor: '#009387',
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingVertical: 40,
   },
-  container_header: {
+  logoContainer: {
     alignItems: 'center',
-    paddingTop: 50,
-    height: '25%',
-    
-    
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
   },
-  span: {
-    color: 'gray',
-    fontSize: 18,
-    fontWeight: 'bold'
-
+  formContainer: {
+    marginTop: 30,
   },
-  /* container_color: {
-    flex: 1,
-    height: '100%',
-    backgroundColor: '#009387'
-  }, */
-  container_body: {
-    flex: 1,
-    paddingHorizontal: 30,
-    paddingVertical: 50,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    backgroundColor: '#FFFF'
-  },
-  header_body: {
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  titl: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 10,
   },
-  text: {
+  subtitle: {
     fontSize: 16,
-    marginTop: 10,
-  },
-  center_body: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  action: {
-    marginTop: 10,
-  },
-  textInput: {
-    fontSize: 16,
-    height:40
-  },
-  container_footer: {
-    alignItems: 'center',
-    paddingVertical: 20,
-    backgroundColor: '#FFFF'
-  },
-  btnI: {
-    alignItems: 'center',
-      margin: 10,
-      width: '60%',
-      elevation: 5,
-      borderRadius: 5,
-      border: '1px solid',
-      borderColor: '000',
-      backgroundColor: 'white',
-      padding: 10
-  },
-  textM: {
-    fontSize: 14,
-    marginTop: 50,
-    color: 'gray'
-  },
-  containerM: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modal: {
-    backgroundColor: 'white',
-    padding: 22,
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  modalText: {
-    fontSize: 18,
+    color: '#888',
     marginBottom: 20,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
+    marginBottom: 15,
   },
-  submitBtn: {
-    padding: 10,
+  loginButton: {
+    backgroundColor: '#009387',
+    marginTop: 10,
+  },
+  forgotPassword: {
+    textAlign: 'center',
+    marginTop: 15,
+    color: '#009387',
+  },
+  footerContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  registerText: {
+    marginTop: 20,
+    color: '#009387',
+    fontWeight: 'bold',
+  },
+  footerText: {
+    marginTop: 20,
+    color: '#888',
   },
 });
-
 
 
  

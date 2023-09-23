@@ -10,30 +10,34 @@ import LinearGradient from 'react-native-linear-gradient';
 import Banner from '../components/Banner';
 
 const Emergencias = () => {
-  const data = useSelector(selectEmergencias);
+  const data = useSelector((state) => state.emergencias);
   const navigation = useNavigation();
+  const banner3 = 'ca-app-pub-1460570234418559/2760320938';
 
   return (
     <View style={{flex: 1}}>
       <LinearGradient
     colors={['#009387', '#2bac83ff', '#fff']}
-    style={styles.linearGradient}>
-      <Banner />
+    style={styles.linearGradient}   > 
+      <Banner banner={banner3} />
+     {
+      data &&
       <FlatList
-        data={data}
-        renderItem={({item}) => (
-          <CardsEmer
-            id={item.id}
-            gps={item.gps}
-            detail={item.detail}
-            image={item.image}
-            name={item.name}
-            dir={item.dir}
-            tel={item.tel}
-          />
-        )}
-        keyExtractor={item => item.name}
-      />
+      data={data}
+      renderItem={({item}) => (
+        <CardsEmer
+          id={item?.id}
+          gps={item?.gps}
+          detail={item?.detail}
+          image={item?.image}
+          name={item?.name}
+          dir={item?.dir}
+          tel={item?.tel}
+        />
+      )}
+      keyExtractor={item => item.name}
+    />
+     }
       </LinearGradient>
     </View>
   );

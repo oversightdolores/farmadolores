@@ -15,7 +15,7 @@ import AuthContext from '../components/context/AutContext';
 
 const banner = 'ca-app-pub-1460570234418559/3397663182';
 const banner1 = 'ca-app-pub-1460570234418559/5911692911';
-const interest = /* __DEV__ ? TestIds.BANNER : */ 'ca-app-pub-1460570234418559/1592012526';
+const interest =  'ca-app-pub-1460570234418559/1592012526';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -23,9 +23,7 @@ export default function Home() {
   const {user, logout} = useContext(AuthContext)
   const Hora = moment().format('HH:mm:ss');
   const [hs, setHs] = useState('');
-  const { isLoaded, isClosed, load, show } = useInterstitialAd(interest, {
-    requestNonPersonalizedAdsOnly: false,
-  });
+  const { isLoaded, isClosed, load, show } = useInterstitialAd(interest);
 
 
 

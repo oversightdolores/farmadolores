@@ -88,7 +88,7 @@ export default function Login() {
         <Text style={styles.registerText} onPress={() => navigation.navigate('Register')}>
           ¿No tienes una cuenta? Regístrate
         </Text>
-        <Text style={styles.footerText}>© 2023 BelaCode</Text>
+        <Text style={styles.footerText}>© 2023 CrazeSoft</Text>
       </View>
     </ScrollView>
   );

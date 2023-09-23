@@ -6,7 +6,7 @@ import authContext from './context/AutContext'; // Asegúrate de que la importac
 
 GoogleSignin.configure({
   scopes: ["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"],
-  androidClientId: '320257863836-8pqr9p81lgh7r41lrq7ef9lurnv5ar25.apps.googleusercontent.com',
+  androidClientId: '320257863836-qsqd0qh6sghoiso15p5oenq2067ckg4q.apps.googleusercontent.com',
   webClientId: '320257863836-7mq4mav5bst0iuraeahu2lpoinjrtc02.apps.googleusercontent.com',
   forceCodeForRefreshToken: true,
 });

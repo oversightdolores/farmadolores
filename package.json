@@ -1,6 +1,6 @@
 {
   "name": "farmadolores",
-  "version": "1.8.10",
+  "version": "1.8.12",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

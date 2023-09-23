@@ -98,7 +98,7 @@ export default function Register() {
       <View style={styles.footerContainer}>
         <GoogleLogin />
        
-        <Text style={styles.footerText}>© 2023 BelaCode</Text>
+        <Text style={styles.footerText}>© 2023 CrazeSoft</Text>
       </View>
         <Pressable onPress={() => navigation.goBack()} style={styles.goBackTextContainer}>
           <Icon name="arrow-back" size={30} color="#009387" />

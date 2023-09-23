@@ -112,14 +112,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginWithGoogle = async () => {
-    await GoogleSignin.signOut()
-
+    await GoogleSignin.signOut();
+  
     try {
       const { idToken } = await GoogleSignin.signIn();
       const googleCredential = firebase.auth.GoogleAuthProvider.credential(idToken);
       const { user } = await firebase.auth().signInWithCredential(googleCredential);
       const userRef = firestore().collection('users').doc(user.uid);
-      setIsLoading(true)
+  
       const snapshot = await userRef.get();
       if (!snapshot.exists) {
         await userRef.set({
@@ -132,24 +132,41 @@ export const AuthProvider = ({ children }) => {
           photoURL: user?.photoURL || ''
         });
       }
-      return setUser(snapshot);
-
+  
+      // Actualiza el estado después de completar todas las operaciones
+      setUser(snapshot.data()); // Establece el usuario en el estado
+  
+      // Ahora puedes actualizar isLoading y otras variables si es necesario
+      setIsLoading(false);
+  
     } catch (error) {
       console.log(error);
+  
+      // En caso de error, asegúrate de manejar adecuadamente isLoading
+      setIsLoading(false);
     }
   };
+  
 
   const logout = async () => {
     try {
-      await firebase.auth().signOut()
-      setUser(null)
-      setIsLoggedIn(false)
+      // Antes de realizar el cierre de sesión, establece isLoading en true
+      setIsLoading(true);
+  
+      // Realiza el cierre de sesión
+      await firebase.auth().signOut();
+  
+      // Limpia el estado relacionado con la autenticación
+      setUser(null);
+      setIsLoggedIn(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      // Independientemente de si hubo un error o no, establece isLoading en false
+      setIsLoading(false);
     }
   };
-
-
+  
   const updateProfileImage = async (uid, uri) => {
     try {
       const response = await fetch(uri);

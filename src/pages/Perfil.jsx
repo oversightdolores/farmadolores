@@ -1,25 +1,64 @@
-import {useNavigation} from '@react-navigation/native';
-import React,{useContext,useEffect,useRef,useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
-  DrawerLayoutAndroid,Pressable,
-  StyleSheet,Text,
-  View
+  DrawerLayoutAndroid,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 import {
-  Avatar,Caption,Title
+  Avatar,
+  Caption,
+  Title,
 } from 'react-native-paper';
 
 import authContext from '../components/context/AutContext';
 
-import {Icon} from '@rneui/themed';
+import { Icon } from '@rneui/themed';
 import imgDefault from '../assets/user.png';
 import PerfilDrawer from '../components/PerfilDrawer';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 
 const Perfil = () => {
-  const {user, logout} = useContext(authContext)
+  const banner4 = 'ca-app-pub-1460570234418559/8346284564';
+
+  const { user, logout } = useContext(authContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigation = useNavigation();
   const drawer = useRef(null);
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: '',
+      headerLeft: () => (
+        <View
+          style={{ marginLeft: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <Avatar.Image
+            source={user.photoURL ? { uri: user.photoURL } : imgDefault}
+            size={40}
+          />
+          <View style={{ marginLeft: 15, flexDirection: 'column' }}>
+            <Title style={styles.title}>{user?.displayName}</Title>
+            <Caption style={styles.caption}>{user?.email}</Caption>
+          </View>
+        </View>
+      ),
+      headerRight: () => (
+        <Pressable
+          style={{ marginRight: 10 }}
+          onPress={() => {
+            if (isDrawerOpen) {
+              drawer.current.closeDrawer();
+            } else {
+              drawer.current.openDrawer();
+            }
+          }}>
+          <Icon name="menu" size={30} color="#000" />
+        </Pressable>
+      ),
+    });
+  }, [navigation, isDrawerOpen]);
 
   const openDrawer = () => {
     drawer.current.openDrawer();
@@ -30,32 +69,6 @@ const Perfil = () => {
     drawer.current.closeDrawer();
     setIsDrawerOpen(false);
   };
-
-  useEffect(() => {
-    navigation.setOptions({
-      title: '',
-      headerLeft: () => (
-        <View
-          style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
-          <Avatar.Image
-            source={user.photoURL ? { uri: user.photoURL  }: imgDefault}
-            size={40}
-          />
-          <View style={{marginLeft: 15, flexDirection: 'column'}}>
-            <Title style={styles.title}>{user?.displayName}</Title>
-            <Caption style={styles.caption}>{user?.email}</Caption>
-          </View>
-        </View>
-      ),
-      headerRight: () => (
-        <Pressable
-          style={{marginRight: 10}}
-          onPress={() => (isDrawerOpen ? closeDrawer() : openDrawer())}>
-          <Icon name="menu" size={30} color="#000" />
-        </Pressable>
-      ),
-    });
-  }, [navigation,isDrawerOpen]);
 
   return (
     <View style={styles.container}>
@@ -71,7 +84,11 @@ const Perfil = () => {
             <View style={styles.headerContent}>
               <Pressable
                 onPress={() => {
-                  drawer.current.openDrawer();
+                  if (isDrawerOpen) {
+                    closeDrawer();
+                  } else {
+                    openDrawer();
+                  }
                 }}>
                 <Icon name="menu" color="#FF6347" size={30} />
               </Pressable>
@@ -83,8 +100,20 @@ const Perfil = () => {
               </Text>
               <Text style={styles.userInfo}>{user?.email}</Text>
               <Text style={styles.userInfo}>{user?.phoneNumber}</Text>
-              
             </View>
+          </View>
+          <View
+            style={{
+              width: '100%',
+              height: 400,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: 20,
+            }}>
+            <BannerAd
+              unitId={banner4}
+              size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
+            />
           </View>
         </View>
       </DrawerLayoutAndroid>
@@ -166,7 +195,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#FFFFFF',
     fontWeight: '600',
-  
   },
   userInfo: {
     fontSize: 16,

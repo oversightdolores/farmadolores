@@ -9,14 +9,16 @@ import {selectFarmacias} from '../redux/reducer';
 import Banner from '../components/Banner';
 
 const Farmacias = () => {
-  const data = useSelector(selectFarmacias);
+  const data = useSelector((state) => state.farmacias);
+  
+  const banner2 = 'ca-app-pub-1460570234418559/2730995808'
   
   return (
     <LinearGradient
     colors={['#009387', '#2bac83ff', '#fff']}
       style={styles.linearGradient}
       >
-        <Banner />
+        <Banner banner={banner2}  />
       <FlatList
         data={data}
         renderItem={({item}) => (

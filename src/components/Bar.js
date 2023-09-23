@@ -7,7 +7,7 @@ import Farmacias from '../pages/Farmacias';
 import Home from '../pages/Home';
 import Perfil from '../pages/Perfil';
 
-import {getEmergencias,getFarmacias,getPublicity} from '../redux/action';
+import {fetchEmergencias,fetchFarmacias,fetchPublicidad} from '../redux/reducer';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import User from 'react-native-vector-icons/FontAwesome';
@@ -18,7 +18,6 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   const [selected, setSelected] = React.useState(0);
-  const usuario = useSelector(state => state.user);
   const data = useSelector(state => state.farmacias);
   const dataEmer = useSelector(state => state.emergencias);
   const dataPubli = useSelector(state => state.publicidad);
@@ -28,13 +27,13 @@ const TabNavigator = () => {
 
   useEffect(() => {
     if (data.length === 0) {
-      dispatch(getFarmacias());
+      dispatch(fetchFarmacias());
     }
     if (dataEmer.length === 0) {
-      dispatch(getEmergencias());
+      dispatch(fetchEmergencias());
     }
     if (dataPubli.length === 0) {
-      dispatch(getPublicity());
+      dispatch(fetchPublicidad());
     }
   }, []);
 
@@ -43,11 +42,12 @@ const TabNavigator = () => {
       <Tab.Navigator
         screenOptions={({route}) => ({
           inactiveTintColor: 'gray',
-          activeTintColor: 'black',
+          activeTintColor: 'green',
           tabBarShowLabel: false,
           tabBarHideOnKeyboard: true,
         
           tabBarIcon: ({focused, color, size}) => {
+            color = focused ? '#2bac83ff' : 'gray';
             let iconName;
             
 

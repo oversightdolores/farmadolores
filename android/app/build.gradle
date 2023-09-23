@@ -100,8 +100,8 @@ android {
         applicationId "com.overcode.farmadolores"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.8.11"
+        versionCode 9
+        versionName "1.8.12"
     }
 
     splits {

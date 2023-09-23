@@ -11,6 +11,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 const DetailEmer = ( { route } ) => {
   const {name, avatar, banner, gps, horario, dir, tel } = route.params;
  const navigation = useNavigation();
+const banner4 = 'ca-app-pub-1460570234418559/8346284564';
   
 
   const latitude = gps.latitude;
@@ -141,7 +142,7 @@ const DetailEmer = ( { route } ) => {
       </View>
     </View>
     </ScrollView>
-    <Banner />
+    <Banner banner={banner4} />
     </>
   );
 };

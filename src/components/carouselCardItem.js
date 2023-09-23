@@ -34,7 +34,8 @@ const CarouselCardItem = ({ item, index }) => {
           style={styles.button}
           mode="contained"
           onPress={onPress}
-          color={'#FFA500'}
+          
+         // color={'#FFA500'}
         >
           <Text style={styles.buttonText}>Ver</Text>
         </Button>
@@ -83,6 +84,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
+     backgroundColor:'#FFA500',
+
   },
 });
 //color: "#2bac8384",

@@ -1,45 +1,80 @@
-//import {getFirestore, collection, query, where, doc, getDocs, onSnapshot, QuerySnapshot} from 'firebase/firestore'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
-import {auth} from '../components/firebaseConfig';
-import {getFarm, loading, getPubli, getEmer, getData} from './reducer';
+import { auth } from '../components/firebaseConfig';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const getFarmacias = () => async dispatch => {
+// ...
+
+// Acción para obtener datos de farmacias y almacenarlos en AsyncStorage y en el estado global
+export const fetchFarmacias = () => async (dispatch) => {
   const farma = firestore().collection('farmacias');
 
-  farma.onSnapshot(querySnapshot => {
-    querySnapshot?.forEach(doc => {
-      dispatch(getFarm(doc.data()));
+  farma.onSnapshot((querySnapshot) => {
+    const farmaciasData = [];
+
+    querySnapshot.forEach((doc) => {
+      farmaciasData.push(doc.data());
     });
 
-    dispatch(loading(false));
+    // Almacena los datos en AsyncStorage
+    try {
+       AsyncStorage.setItem('farmaciasData', JSON.stringify(farmaciasData));
+    } catch (error) {
+      console.error('Error al almacenar datos de farmacias en AsyncStorage', error);
+    }
+
+    // Actualiza el estado global con los datos
+    dispatch(setFarmacias(farmaciasData));
+    dispatch(setLoading(false));
   });
 };
 
-export const getUser = () => async dispatch => {
-  const user = auth().currentUser;
-  dispatch(getData(user));
-};
-
-export const getPublicity = () => async dispatch => {
+// Acción para obtener datos de publicidad y almacenarlos en AsyncStorage y en el estado global
+export const fetchPublicidad = () => async (dispatch) => {
   const publi = firestore().collection('publi');
 
-  publi?.onSnapshot(querySnapshot => {
-    querySnapshot?.forEach(doc => {
-      dispatch(getPubli(doc.data()));
+  publi.onSnapshot((querySnapshot) => {
+    const publiData = [];
+
+    querySnapshot.forEach((doc) => {
+      publiData.push(doc.data());
     });
 
-    dispatch(loading(false));
+    // Almacena los datos en AsyncStorage
+    try {
+       AsyncStorage.setItem('publiData', JSON.stringify(publiData));
+    } catch (error) {
+      console.error('Error al almacenar datos de publicidad en AsyncStorage', error);
+    }
+
+    // Actualiza el estado global con los datos
+    dispatch(setPublicidad(publiData));
+    dispatch(setLoading(false));
   });
 };
 
-export const getEmergencias = () => async dispatch => {
+// Acción para obtener datos de emergencias y almacenarlos en AsyncStorage y en el estado global
+export const fetchEmergencias = () => async (dispatch) => {
   const emer = firestore().collection('emergencias');
 
-  emer.onSnapshot(querySnapshot => {
-    querySnapshot?.forEach(doc => {
-      dispatch(getEmer(doc.data()));
+  emer.onSnapshot((querySnapshot) => {
+    const emergenciasData = [];
+
+    querySnapshot.forEach((doc) => {
+      emergenciasData.push(doc.data());
     });
 
-    dispatch(loading(false));
+    // Almacena los datos en AsyncStorage
+    try {
+       AsyncStorage.setItem('emerData', JSON.stringify(emergenciasData));
+    } catch (error) {
+      console.error('Error al almacenar datos de emergencias en AsyncStorage', error);
+    }
+
+    // Actualiza el estado global con los datos
+    dispatch(setEmergencias(emergenciasData));
+    dispatch(setLoading(false));
   });
 };
+
+// ...

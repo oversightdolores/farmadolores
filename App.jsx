@@ -1,18 +1,12 @@
-import store from './src/redux/store';
-import { useColorScheme } from 'react-native';
-import { useState, useEffect, useContext } from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider } from 'react-redux';
+import {NavigationContainer} from '@react-navigation/native';
+import {PermissionsAndroid} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {Provider} from 'react-redux';
 import Nav from './src/components/Nav';
-import { NavigationContainer, DefaultTheme, DarkTheme, } from '@react-navigation/native';
-import Splash from './src/components/Splash';
-import { AuthProvider } from './src/components/context/AutContext'
-import ThemeContext, { ThemeProvider } from './src/components/context/ThemeContext'
-import SplashScreen from 'react-native-splash-screen'
-import messaging from '@react-native-firebase/messaging';
-import {PermissionsAndroid} from 'react-native'
+import {AuthProvider} from './src/components/context/AutContext';
+import {ThemeProvider} from './src/components/context/ThemeContext';
+import store from './src/redux/store';
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-import PushNotification, { Importance } from 'react-native-push-notification';
 
 
 const colorBtns = {
@@ -36,15 +30,7 @@ const colorBtns = {
 
 export default function App() {
 
-  
-  const { theme } = useContext(ThemeContext)
-  const [isLoad, setIsLoad] = useState(true);
-  useEffect(() => {
-    SplashScreen.hide()
-    
-  }, []);
 
-  
 
   return (
     <SafeAreaProvider>

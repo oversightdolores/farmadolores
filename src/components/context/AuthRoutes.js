@@ -10,11 +10,16 @@ import Details from '../../pages/Details';
 import DetailEmer from '../../pages/DetailEmer';
 import Reportar from '../Reportar';
 import EditarPerfil from '../../pages/EditarPerfil';
+import { Registered, RegistrationError, Notifications } from 'react-native-notifications';
 
 const Stack = createNativeStackNavigator();
 
 const PrivateRoute = ({ children, ...rest }) => {
   const { user, isLoading } = useContext(AuthContext);
+
+
+  
+
 
   if (isLoading) {
     return (

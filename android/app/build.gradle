@@ -100,8 +100,8 @@ android {
         applicationId "com.overcode.farmadolores"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
-        versionName "1.8.12"
+        versionCode 10
+        versionName "1.8.13"
     }
 
     splits {
@@ -162,14 +162,12 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation 'com.google.firebase:firebase-core:+'
-    implementation ('com.google.firebase:firebase-messaging:+') {
-        force = true;
-    }
+   
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
      implementation project(':react-native-linear-gradient')
      implementation "com.facebook.flipper:flipper:${FLIPPER_VERSION}"
-implementation "com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}"
-implementation ("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
+    implementation "com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}"
+    implementation ("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
@@ -183,6 +181,6 @@ implementation ("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
         implementation jscFlavor
     }
 }
-
+apply plugin: 'com.google.gms.google-services'
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

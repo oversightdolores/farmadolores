@@ -5,6 +5,7 @@ import Geolocation from 'react-native-geolocation-service';
 import MapView,{Marker,PROVIDER_GOOGLE} from "react-native-maps";
 import Banner from "../components/Banner";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import {DateTime} from "luxon";
 
 const Details = ( { route } ) => {
   const {name, avatar, banner, gps, horario, dir, tel } = route.params;
@@ -54,6 +55,14 @@ const banner4 = 'ca-app-pub-1460570234418559/8346284564';
     Linking.openURL(`tel:${item}`);
   }
 
+  const splitHorarios = (horarios) => {
+    const groupedHorarios = [];
+    for (let i = 0; i < horarios.length; i += 2) {
+      groupedHorarios.push(horarios.slice(i, i + 2));
+    }
+    return groupedHorarios;
+  };
+
 
   return (
     <>
@@ -91,10 +100,35 @@ const banner4 = 'ca-app-pub-1460570234418559/8346284564';
           }
         </View>
 
-        <View style={styles.horario}>
+          <View style={styles.cardFooterLeft}>
           <Text style={{color: '#000', fontSize: 20, fontWeight: 'bold' }}>Horario de Atencion</Text>
-          <Text style={styles.hs}>{horario[0]} -A- {horario[1]} </Text>
-          <Text style={styles.hs}>{horario[2]} -A- {horario[3]} </Text>
+          {horario && horario.length > 0 ? (
+            splitHorarios(horario).map((horarioGroup, groupIndex) => (
+              <View key={groupIndex} style={styles.horarioGroup}>
+                {horarioGroup.map((timestampData, index) => {
+                  if (timestampData && timestampData.seconds) {
+                    const seconds = timestampData.seconds;
+                    const nanoseconds = timestampData.nanoseconds / 1e6;
+                    const timestamp = DateTime.fromMillis(seconds * 1000 + nanoseconds, { zone: 'utc' })
+                      .setZone('America/Argentina/Buenos_Aires')
+                      .toLocaleString(DateTime.TIME_24_SIMPLE);
+                  
+                    return (
+                      <View style={{ display: 'flex', flexWrap: 'wrap',  flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 5}} key={index}  >
+                      <Text key={index} style={styles.horario}>
+                      {index === 0 ? '' : ' a '}
+                      {timestamp}
+                    </Text>
+                    </View>
+                    );
+                  }
+                  return null;
+                })}
+              </View>
+            ))
+          ) : (
+            <Text style={styles.horario}>Horario no disponible</Text>
+          )}
         </View>
         <View style={styles.map}>
 
@@ -142,7 +176,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-
+  horarioGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   header: {
     backgroundColor: "#00BFFF",
     height: 200,
@@ -193,14 +230,20 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: "center",
   },
-  horario: {
-    backgroundColor: "#2bac8384",
+  cardFooterLeft: {
     width: 250,
     height: 150,
-    borderRadius: 30,
+    display: 'flex',
+    borderRadius: 10,
+    alignItems: 'center',
     marginTop: 10,
-    
-    alignItems: "center",
+    padding: 5,
+    backgroundColor: "#2bac8384",
+  },
+  horario: {
+   fontSize: 16,
+   color: "#696969",
+   
   },
   hs: {
     marginTop: 10,

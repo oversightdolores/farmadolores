@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { DateTime } from 'luxon';
 import CardsFarm from './CardsFarm';
-import messaging from '@react-native-firebase/messaging';
-
+import AuthContext from './context/AutContext';
+import PushNotification from 'react-native-push-notification';
 
 const NoTurnos = () => {
   return (
@@ -16,6 +16,8 @@ const NoTurnos = () => {
 };
 
 const Turnos = ({ navigation, route }) => {
+  const { user } = useContext(AuthContext);
+  console.log(user.fcmToken);
   const farmacias = useSelector((state) => state.farmacias);
   const [turno, setTurno] = useState(null);
 
@@ -39,13 +41,46 @@ const Turnos = ({ navigation, route }) => {
           millisecond: turnStartBase.millisecond,
         });
         const turnEnd = turnStart.plus({ hours: 24 });
-        
+
         return now >= turnStart && now <= turnEnd;
       });
     });
 
     if (matchingPharmacy) {
       setTurno(matchingPharmacy);
+    }
+
+    const notificationTimes = [
+      now.set({ hour: 9, minute: 0, second: 0, millisecond: 0 }),
+      now.set({ hour: 13, minute: 30, second: 0, millisecond: 0 }),
+      now.set({ hour: 20, minute: 0, second: 0, millisecond: 0 }),
+    ];
+
+    const nextNotificationTime = notificationTimes.find((time) => time > now);
+    if (nextNotificationTime) {
+      const timeUntilNotification = nextNotificationTime - now;
+
+      // Programa la notificación para un tiempo futuro
+      console.log('Notificaciones');
+
+      PushNotification.localNotificationSchedule({
+        title: 'Farmacia de turno',
+        message: `La farmacia de turno es ${matchingPharmacy?.name}`,
+        style: 'bigpicture',
+        picture: matchingPharmacy?.image, // La imagen que deseas mostrar
+        date: new Date(Date.now() + timeUntilNotification),
+      });
+      
+
+      // Suscríbete al tópico "farmaTurnos" para enviar notificaciones remotas
+      // Asegúrate de que el usuario esté autenticado y obtén su ID de usuario o información relevante
+      if (user) {
+        const senderId = '320257863836'; // Reemplaza con tu senderId de FCM
+        const topic = 'farmaTurnos';
+
+        // Suscríbete al tópico
+        PushNotification.subscribeToTopic(senderId, topic);
+      }
     }
   }, [farmacias]);
 
@@ -65,8 +100,8 @@ const Turnos = ({ navigation, route }) => {
       </View>
     </View>
   ) : (
-   <NoTurnos />
-  )
+    <NoTurnos />
+  );
 };
 
 export default Turnos;
@@ -87,11 +122,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'red',
-  }, 
+  },
   turnos: {
     backgroundColor: 'transparent',
   },
- 
   noTurnos: {
     flex: 1,
     marginTop: 10,

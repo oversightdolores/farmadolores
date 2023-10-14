@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -10,15 +10,12 @@ import Details from '../../pages/Details';
 import DetailEmer from '../../pages/DetailEmer';
 import Reportar from '../Reportar';
 import EditarPerfil from '../../pages/EditarPerfil';
-import { Registered, RegistrationError, Notifications } from 'react-native-notifications';
+
 
 const Stack = createNativeStackNavigator();
 
 const PrivateRoute = ({ children, ...rest }) => {
   const { user, isLoading } = useContext(AuthContext);
-
-
-  
 
 
   if (isLoading) {

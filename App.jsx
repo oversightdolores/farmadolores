@@ -1,12 +1,15 @@
 import {NavigationContainer} from '@react-navigation/native';
-import {PermissionsAndroid} from 'react-native';
+import {PermissionsAndroid, Alert} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import Nav from './src/components/Nav';
 import {AuthProvider} from './src/components/context/AutContext';
 import {ThemeProvider} from './src/components/context/ThemeContext';
 import store from './src/redux/store';
-PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+import messaging from '@react-native-firebase/messaging';
+import {useEffect} from 'react';
+import {Notifications} from 'react-native-notifications';
+
 
 
 const colorBtns = {
@@ -30,7 +33,12 @@ const colorBtns = {
 
 export default function App() {
 
+  useEffect(() => {
+    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+    
 
+  
+  }, []);
 
   return (
     <SafeAreaProvider>

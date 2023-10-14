@@ -21,46 +21,39 @@
         android:allowBackup="false"
         android:theme="@style/AppTheme">
 
-        <receiver android:name="io.invertase.firebase.notifications.RNFirebaseNotificationReceiver" />
+        <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground"
+            android:value="false" />
+        <!-- Change the resource name to your App's accent color - or any other color you want -->
+        <meta-data android:name="com.dieam.reactnativepushnotification.notification_color"
+            android:resource="@color/white" /> <!-- or @android:color/{name} to use a standard color -->
+
         <receiver
-            android:enabled="true"
-            android:exported="true"
-            android:name="io.invertase.firebase.notifications.RNFirebaseNotificationsRebootReceiver">
+            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />
+        <receiver
+            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
+        <receiver
+            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-        <service android:name="io.invertase.firebase.messaging.RNFirebaseMessagingService"
-            android:exported="false"> <!-- Cambia a "false" si no quieres que sea exportado -->
+
+        <service
+            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <receiver
-            android:name="io.invertase.firebase.notifications.RNFirebaseBackgroundNotificationActionReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="io.invertase.firebase.notifications.BackgroundAction" />
-            </intent-filter>
-        </receiver>
-        <service
-            android:name="io.invertase.firebase.notifications.RNFirebaseBackgroundNotificationActionsService" />
-        <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA9JvTARfT2vGaG6VyV6zZEzDeYJGjuoDw" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/notification_icon" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id"
-            tools:replace="android:value" />
-
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"

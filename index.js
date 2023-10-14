@@ -2,16 +2,19 @@
  * @format
  */
 
-import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
-<script src="http://localhost:8097"></script>
-import messaging from '@react-native-firebase/messaging';
+import React, { useEffect } from 'react';
+import { AppRegistry, Platform } from 'react-native';
+import messaging from '@react-native-firebase/messaging'; // Importa el módulo de Firebase Messaging
 
+// Configura el manejador de mensajes en segundo plano
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log('Message handled in the background!', remoteMessage);
-  });
+  // Procesa el mensaje en segundo plano
+  console.log('Mensaje en segundo plano recibido:', remoteMessage);
 
+
+});
 
 AppRegistry.registerComponent(appName, () => App);
 

@@ -52,7 +52,7 @@ const Turnos = ({ navigation, route }) => {
 
     const notificationTimes = [
       now.set({ hour: 9, minute: 0, second: 0, millisecond: 0 }),
-      now.set({ hour: 13, minute: 30, second: 0, millisecond: 0 }),
+      now.set({ hour: 13, minute: 0, second: 0, millisecond: 0 }),
       now.set({ hour: 20, minute: 0, second: 0, millisecond: 0 }),
     ];
 

@@ -3,6 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import storage from '@react-native-firebase/storage';
 import { useState, useEffect, createContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   GoogleSignin,
@@ -42,18 +43,25 @@ export const AuthProvider = ({ children }) => {
           const data = snapshot.data();
           setUser(data);
           setIsLoggedIn(true);
-  
-          // Obtener el token FCM y suscribirse al tópico 'farmaTurnos'
+
+          // Obtener el token FCM
           const authorizationStatus = await messaging().requestPermission();
           if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
             const fcmToken = await messaging().getToken();
-            updateUserFCMToken(user.uid, fcmToken);
-  
-            // Suscribir al usuario al tópico 'farmaTurnos'
-            messaging()
-              .subscribeToTopic('farmaTurnos')
-              .then(() => console.log('Usuario suscrito al tópico "farmaTurnos"'))
-              .catch(error => console.error('Error al suscribir al tópico:', error));
+
+            saveFCMTokenToStorage(fcmToken);
+
+            // Verificar si el usuario ya está suscrito
+            const isSubscribed = await AsyncStorage.getItem('isSubscribedToTopic');
+            if (isSubscribed !== 'true') {
+              // Si no está suscrito, suscríbelo
+              await messaging().subscribeToTopic('farmaTurnos');
+              // Actualiza el indicador en AsyncStorage
+              await AsyncStorage.setItem('isSubscribedToTopic', 'true');
+              console.log('Usuario suscrito al tópico "farmaTurnos"');
+            } else {
+              console.log('El usuario ya está suscrito al tópico "farmaTurnos"');
+            }
           }
         } catch (error) {
           console.error(error);
@@ -67,23 +75,29 @@ export const AuthProvider = ({ children }) => {
     });
     return () => unsubscribe();
   }, []);
-  
 
-
-  const updateUserFCMToken = async (userId, fcmToken) => {
+  const checkAndSubscribeToTopic = async () => {
     try {
-      await firestore()
-        .collection('users')
-        .doc(userId)
-        .update({
-          fcmToken: fcmToken,
-        });
+      const fcmToken = await AsyncStorage.getItem('fcmToken');
+
+      if (fcmToken) {
+        const topics = await messaging().subscribeToTopic('farmaTurnos');
+        console.log('Usuario suscrito al tópico "farmaTurnos"');
+      } else {
+        console.log('El token FCM no existe en AsyncStorage');
+      }
     } catch (error) {
-      console.log('Error al actualizar el token FCM del usuario:', error);
+      console.error('Error al verificar el token FCM en AsyncStorage:', error);
     }
   };
 
-
+  const saveFCMTokenToStorage = async (token) => {
+    try {
+      await AsyncStorage.setItem('fcmToken', token);
+    } catch (error) {
+      console.error('Error al guardar el token FCM en AsyncStorage:', error);
+    }
+  };
 
   const resetPassword = async (email) => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

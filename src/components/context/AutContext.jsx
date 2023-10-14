@@ -1,5 +1,6 @@
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 import storage from '@react-native-firebase/storage';
 import { useState, useEffect, createContext } from 'react';
 
@@ -20,7 +21,8 @@ const AuthContext = createContext({
   loginWithGoogle: async () => { },
   updateInfo: async () => { },
   updateProfileImage: async () => { },
-  resetPassword: async () => { }
+  resetPassword: async () => { },
+  updateUserFCMToken: async () => {},
 });
 
 
@@ -40,6 +42,19 @@ export const AuthProvider = ({ children }) => {
           const data = snapshot.data();
           setUser(data);
           setIsLoggedIn(true);
+  
+          // Obtener el token FCM y suscribirse al tópico 'farmaTurnos'
+          const authorizationStatus = await messaging().requestPermission();
+          if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+            const fcmToken = await messaging().getToken();
+            updateUserFCMToken(user.uid, fcmToken);
+  
+            // Suscribir al usuario al tópico 'farmaTurnos'
+            messaging()
+              .subscribeToTopic('farmaTurnos')
+              .then(() => console.log('Usuario suscrito al tópico "farmaTurnos"'))
+              .catch(error => console.error('Error al suscribir al tópico:', error));
+          }
         } catch (error) {
           console.error(error);
         } finally {
@@ -52,6 +67,21 @@ export const AuthProvider = ({ children }) => {
     });
     return () => unsubscribe();
   }, []);
+  
+
+
+  const updateUserFCMToken = async (userId, fcmToken) => {
+    try {
+      await firestore()
+        .collection('users')
+        .doc(userId)
+        .update({
+          fcmToken: fcmToken,
+        });
+    } catch (error) {
+      console.log('Error al actualizar el token FCM del usuario:', error);
+    }
+  };
 
 
 
@@ -221,7 +251,7 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         resetPassword,
-
+      
       }}
     >
       {children}

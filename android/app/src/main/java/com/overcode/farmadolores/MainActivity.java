@@ -4,8 +4,8 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
-import org.devio.rn.splashscreen.SplashScreen; // Import this.
-import android.os.Bundle; // Import this.
+import android.content.Intent; // Agregar esta importación
+
 
 public class MainActivity extends ReactActivity {
 
@@ -17,6 +17,12 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "farmadolores";
   }
+
+   @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
 
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link
@@ -35,9 +41,4 @@ public class MainActivity extends ReactActivity {
         );
   }
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    SplashScreen.show(this);
-    super.onCreate(savedInstanceState);
-  }
 }

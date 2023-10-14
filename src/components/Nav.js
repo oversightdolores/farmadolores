@@ -14,9 +14,10 @@ import {
 } from '../redux/reducer';
 
 export default function Nav() {
-  const { isLoading, isLoggedIn } = useContext(authContext);
+  const { isLoading, user, isLoggedIn } = useContext(authContext);
   const [isConnected, setIsConnected] = useState(true);
   const dispatch = useDispatch();
+
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
@@ -29,8 +30,11 @@ export default function Nav() {
   }, []);
 
   useEffect(() => {
+    
 
     if (!isConnected && isLoggedIn) {
+
+    
      
       // Si hay conexión a Internet, cargar datos desde Firebase
       // Dispatch de las acciones asincrónicas originales
@@ -38,14 +42,13 @@ export default function Nav() {
       dispatch(getPublicidadFromStorage());
       dispatch(getEmergenciasFromStorage());
     } else if (isLoggedIn) {
-      // Si no hay conexión a Internet, borrar datos de Firebase
-      // Dispatch de las acciones asincrónicas originales
+     
       dispatch(fetchFarmacias());
       dispatch(fetchPublicidad());
       dispatch(fetchEmergencias());
     } 
      
-  }, [isConnected, dispatch]);
+  }, [isConnected, dispatch, user]);
 
   return (
     <>
